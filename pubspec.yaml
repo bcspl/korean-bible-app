@@ -1,0 +1,36 @@
+name: korean_bible_app
+description: "완전 무료 오프라인 한국어 성경 앱 - Public Domain 데이터"
+publish_to: 'none'
+version: 1.0.0+1   # 버전 관리 (업데이트 시 올리기)
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'   # Flutter SDK 버전에 맞춤
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # === 필수 Dependencies 추가 ===
+  hive: ^2.2.3                    # 로컬 NoSQL DB (오프라인 성경 저장, 북마크, 기도장)
+  hive_flutter: ^1.1.0            # Flutter 연동 Hive
+  path_provider: ^2.1.4           # 기기 파일/디렉토리 경로 접근 (Hive box 위치)
+  provider: ^6.1.2                # 상태 관리 (선택, 간단한 앱에 추천)
+  # intl: ^0.19.0                 # 날짜/로케일 (기도장 날짜용, 필요시)
+  
+  # 추가 추천 (나중에)
+  # shared_preferences: ^2.3.2   # 간단 설정 저장 (글씨 크기, 다크모드)
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  hive_generator: ^2.0.1          # Hive 모델 자동 생성 (freezed 대체 가능)
+  build_runner: ^2.4.12           # 코드 생성 도구
+
+flutter:
+  uses-material-design: true
+  
+  # === Assets 등록 (가장 중요!) ===
+  assets:
+    - assets/data/                  # assets/data/ 폴더 전체 등록 (kor_bible_full.json)
+    # - assets/images/              # 이미지 폴더 필요시 추가
+    # - assets/fonts/               # 커스텀 폰트 필요시

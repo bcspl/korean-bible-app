@@ -1,0 +1,5 @@
+Version: 개역개정 (Public Domain)
+Total Books: 66
+Total Chapters: 1171
+Total Verses: 30625
+Source: seven1m/open-bibles - Public Domain
