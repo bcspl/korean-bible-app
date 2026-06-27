@@ -2,9 +2,10 @@
 
 > **참고**: 전체 로드맵은 `Project_Status_and_Updated_Roadmap_2026-06-19.md` 참조
 
-## 현재 진행 상황 요약 (2026-06-27)
+## 현재 진행 상황 요약 (2026-06-27, /roadmap-pptx 재실행 - 코드 상태 검사 완료)
 **전체 로드맵 대비 진행률**: Phase 0~2 완료 (약 40% 완료)
-- ✅ 완료: Phase 0 (기반), Phase 1 (데이터 계층: 모델+어댑터+JSON 로더+시드), Phase 2 (기본 읽기 UI: 책목록/장선택/뷰어 + 검색 + 네비 + 홈)
+- ✅ 완료: Phase 0 (기반), Phase 1 (데이터 계층: 모델+어댑터+JSON 로더+시드), Phase 2 (기본 읽기 UI: 책목록/장선택/뷰어 + 검색 + 네비 + 홈) 
+  - 검사 결과: lib/ screens 3개 (BookList with bilingual+verse search+OT/NT full filter buttons, compact 6-col ChapterList, VerseViewer with home+RichText+version), Provider full search + bilingual map, no Phase 3 code yet.
 - 🔄 진행중: UI/UX 폴리싱 (검색 강화, 디자인 개선 완료 직전)
 - ⏳ 남은 주요: Phase 3 (사용자 기능: 북마크/설정 + 추가 콘텐츠: 찬송가 가사 및 악보 / 사도신경 / 주기도문 / 교독문 + "이 성경앱에 대해서"), Phase 4 (고도화), Phase 5 (배포)
 - **당장 다음 할 일 (우선순위 Top 3)**:

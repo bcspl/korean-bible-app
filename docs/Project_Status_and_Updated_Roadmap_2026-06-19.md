@@ -1,9 +1,9 @@
 # Korean Bible App Project - 종합 현황 및 로드맵 (Updated 2026-06-27)
 
-**현재 진행 상황 요약 (스킬 실행시 매번 갱신)**:
+**현재 진행 상황 요약 (스킬 실행시 매번 갱신, 2026-06-27 /roadmap-pptx 재실행)**:
 - **전체 대비**: ~40% 완료 (Phase 0-2 ✅)
 - **시각적 진행**: [████████░░░░░░░░░░░░░░░░░░░░] 40%
-- **완료**: Phase 0,1,2 (데이터 + 기본 UI + 검색/홈/디자인)
+- **완료**: Phase 0,1,2 (데이터 + 기본 UI + 검색/홈/디자인) — 코드 검사 확인: bilingual 검색+verse text 검색, OT/NT 전체 필터, compact 6-col grid, RichText viewer + direct home(popUntil), prev/next, version badge. Phase 3+ (북마크/추가콘텐츠) 미구현
 - **당장 다음 (상세)**: Phase 3 북마크 + 찬송가 가사/악보 / 사도신경 / 주기도문 / 교독문 + "이 성경앱에 대해서" (자세한 태스크는 백로그 참조)
 - **남은**: Phase 3-5 전체 (사용자 기능 + 추가 콘텐츠, 고도화, 배포)
 
