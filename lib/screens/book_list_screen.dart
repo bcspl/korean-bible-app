@@ -1,6 +1,12 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/bible_provider.dart';
+import 'about_screen.dart';
+import 'bookmark_list_screen.dart';
+import 'creed_screen.dart';
+import 'hymn_list_screen.dart';
+import 'lords_prayer_screen.dart';
+import 'responsive_reading_screen.dart';
 import 'chapter_list_screen.dart';
 import 'verse_viewer_screen.dart';
 
@@ -21,6 +27,27 @@ class _BookListScreenState extends State<BookListScreen> {
     final provider = Provider.of<BibleProvider>(context);
     final books = provider.books;
 
+    if (provider.isLoading) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+    if (provider.hasError) {
+      return Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('데이터 로드 실패: ${provider.errorMessage}'),
+              ElevatedButton(
+                onPressed: () => provider.loadBooks(),
+                child: const Text('재시도'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
     if (books.isEmpty) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
@@ -45,6 +72,46 @@ class _BookListScreenState extends State<BookListScreen> {
       appBar: AppBar(
         title: const Text('성경'),
         elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.bookmark),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const BookmarkListScreen()),
+              );
+            },
+            tooltip: '북마크 목록',
+          ),
+          IconButton(
+            icon: const Icon(Icons.music_note),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const HymnListScreen()),
+              );
+            },
+            tooltip: '찬송가',
+          ),
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.menu_book),
+            tooltip: '예배 자료',
+            onSelected: (v) {
+              Widget screen;
+              if (v == 'creed') screen = const CreedScreen();
+              else if (v == 'prayer') screen = const LordsPrayerScreen();
+              else if (v == 'reading') screen = const ResponsiveReadingScreen();
+              else screen = const AboutScreen();
+              Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
+            },
+            itemBuilder: (c) => const [
+              PopupMenuItem(value: 'creed', child: Text('사도신경')),
+              PopupMenuItem(value: 'prayer', child: Text('주기도문')),
+              PopupMenuItem(value: 'reading', child: Text('교독문')),
+              PopupMenuItem(value: 'about', child: Text('이 성경앱에 대해서')),
+            ],
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -138,11 +205,14 @@ class _BookListScreenState extends State<BookListScreen> {
                   return Card(
                     child: ListTile(
                       dense: true,
-                      title: Text(
-                        '${match.bookDisplay} ${match.snippet}',
-                        style: const TextStyle(fontSize: 13),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                      title: Semantics(
+                        label: '검색 결과 ${match.bookDisplay} ${match.snippet}',
+                        child: Text(
+                          '${match.bookDisplay} ${match.snippet}',
+                          style: const TextStyle(fontSize: 13),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                       onTap: () {
                         provider.setCurrentBook(match.bookIndex);
@@ -153,6 +223,7 @@ class _BookListScreenState extends State<BookListScreen> {
                             builder: (_) => VerseViewerScreen(
                               bookIndex: match.bookIndex,
                               chapterIndex: match.chapterIndex,
+                              initialVerseIndex: match.verseIndex + 1, // 0-based -> 1-based
                             ),
                           ),
                         );

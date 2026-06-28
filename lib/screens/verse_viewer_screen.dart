@@ -1,15 +1,18 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../models/bible_bookmark.dart';
 import '../providers/bible_provider.dart';
 
 class VerseViewerScreen extends StatefulWidget {
   final int bookIndex;
   final int chapterIndex;
+  final int? initialVerseIndex; // 북마크에서 특정 절로 이동 시
 
   const VerseViewerScreen({
     super.key,
     required this.bookIndex,
     required this.chapterIndex,
+    this.initialVerseIndex,
   });
 
   @override
@@ -23,6 +26,22 @@ class _VerseViewerScreenState extends State<VerseViewerScreen> {
   void initState() {
     super.initState();
     _scrollController = ScrollController();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.initialVerseIndex != null) {
+        final chapter = Provider.of<BibleProvider>(context, listen: false)
+            .books[widget.bookIndex]
+            .chapters[widget.chapterIndex];
+        final targetIndex = widget.initialVerseIndex! - 1; // 1-based to 0
+        if (targetIndex >= 0 && targetIndex < chapter.verses.length) {
+          // approximate scroll, each item ~ 40-60px
+          _scrollController.animateTo(
+            targetIndex * 55.0,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
+        }
+      }
+    });
   }
 
   @override
@@ -50,6 +69,35 @@ class _VerseViewerScreenState extends State<VerseViewerScreen> {
           ],
         ),
         actions: [
+          Consumer<BibleProvider>(
+            builder: (context, provider, _) {
+              final isBookmarked = provider.isChapterBookmarked(
+                widget.bookIndex, widget.chapterIndex);
+              return IconButton(
+                icon: Icon(
+                  isBookmarked ? Icons.bookmark : Icons.bookmark_border,
+                  color: isBookmarked ? Colors.indigo : null,
+                ),
+                onPressed: () async {
+                  final book = provider.books[widget.bookIndex];
+                  final snippet = '${book.book} ${widget.chapterIndex + 1}장';
+                  final bm = BibleBookmark(
+                    bookIndex: widget.bookIndex,
+                    chapterIndex: widget.chapterIndex,
+                    verseIndex: null,
+                    snippet: snippet,
+                    createdAt: DateTime.now(),
+                  );
+                  if (isBookmarked) {
+                    await provider.removeBookmark(bm);
+                  } else {
+                    await provider.addBookmark(bm);
+                  }
+                },
+                tooltip: isBookmarked ? '장 북마크 해제' : '현재 장 북마크',
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.home),
             onPressed: () {
@@ -129,20 +177,60 @@ class _VerseViewerScreenState extends State<VerseViewerScreen> {
               itemCount: chapter.verses.length,
               itemBuilder: (context, index) {
                 final verse = chapter.verses[index];
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: RichText(
-                    text: TextSpan(
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 17, height: 1.7),
-                      children: [
-                        TextSpan(
-                          text: '${verse.verse} ',
-                          style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.indigo, fontSize: 15),
-                        ),
-                        TextSpan(text: verse.text),
-                      ],
-                    ),
-                  ),
+                return Consumer<BibleProvider>(
+                  builder: (context, provider, _) {
+                    final isBookmarked = provider.isVerseBookmarked(
+                        widget.bookIndex, widget.chapterIndex, verse.verse);
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Semantics(
+                              label: '절 ${verse.verse}: ${verse.text}',
+                              child: RichText(
+                                text: TextSpan(
+                                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 17, height: 1.7),
+                                  children: [
+                                    TextSpan(
+                                      text: '${verse.verse} ',
+                                      style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.indigo, fontSize: 15),
+                                    ),
+                                    TextSpan(text: verse.text),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              isBookmarked ? Icons.bookmark : Icons.bookmark_border,
+                              size: 18,
+                              color: isBookmarked ? Colors.indigo : Colors.grey,
+                            ),
+                            onPressed: () async {
+                              final snippet = '${verse.verse} ${verse.text.length > 30 ? '${verse.text.substring(0, 30)}...' : verse.text}';
+                              final bm = BibleBookmark(
+                                bookIndex: widget.bookIndex,
+                                chapterIndex: widget.chapterIndex,
+                                verseIndex: verse.verse,
+                                snippet: snippet,
+                                createdAt: DateTime.now(),
+                              );
+                              if (isBookmarked) {
+                                await provider.removeBookmark(bm);
+                              } else {
+                                await provider.addBookmark(bm);
+                              }
+                            },
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                 );
               },
             ),

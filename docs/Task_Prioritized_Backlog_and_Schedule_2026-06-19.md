@@ -3,15 +3,14 @@
 > **참고**: 전체 로드맵은 `Project_Status_and_Updated_Roadmap_2026-06-19.md` 참조
 
 ## 현재 진행 상황 요약 (2026-06-27, /roadmap-pptx 재실행 - 코드 상태 검사 완료)
-**전체 로드맵 대비 진행률**: Phase 0~2 완료 (약 40% 완료)
-- ✅ 완료: Phase 0 (기반), Phase 1 (데이터 계층: 모델+어댑터+JSON 로더+시드), Phase 2 (기본 읽기 UI: 책목록/장선택/뷰어 + 검색 + 네비 + 홈) 
-  - 검사 결과: lib/ screens 3개 (BookList with bilingual+verse search+OT/NT full filter buttons, compact 6-col ChapterList, VerseViewer with home+RichText+version), Provider full search + bilingual map, no Phase 3 code yet.
-- 🔄 진행중: UI/UX 폴리싱 (검색 강화, 디자인 개선 완료 직전)
-- ⏳ 남은 주요: Phase 3 (사용자 기능: 북마크/설정 + 추가 콘텐츠: 찬송가 가사 및 악보 / 사도신경 / 주기도문 / 교독문 + "이 성경앱에 대해서"), Phase 4 (고도화), Phase 5 (배포)
+**전체 로드맵 대비 진행률**: ~60% 완료 (Phase 0-3 대부분 ✅)
+- ✅ 완료: Phase 0-2 + Phase 3 (북마크, 찬송가 검색+즐겨찾기, 신경/기도/교독문 dual, About, BottomNav, 다크모드+글꼴 슬라이더)
+- 🔄 진행중: Phase 4 고도화 시작
+- ⏳ 남은 주요: Phase 4 (접근성, 로딩/에러, 반응형, 브랜딩), Phase 5 (배포)
 - **당장 다음 할 일 (우선순위 Top 3)**:
-  1. Phase 3 Day1~2: 북마크 기능 구현 (model + Hive + viewer 버튼 + 목록 화면)
-  2. Phase 3 Day2~3: 설정 화면 구현 + 본문 검색 결과 polish (글꼴 크기/다크모드 토글)
-  3. 찬송가 가사+악보 화면, 사도신경, 주기도문, 교독문, "이 성경앱에 대해서" 페이지 추가 (메모 기능 완전 배제)
+  1. Phase 4: 접근성 강화 (Semantics, high contrast)
+  2. Phase 4: 로딩/에러 UI + 반응형
+  3. 설정 폰트 크기 완성 (이미 slider 추가됨) + 예배자료 BottomNav 통합
 
 **시각적 진행 표시**:
 ```
@@ -74,40 +73,31 @@ Phase 4-5:   [░░░░░░░░░░]   0%
 - [x] HomeScreen을 Bible reader로 대체 (BookList 직접 진입)
 - [x] State management with Provider for current reading position
 
-## Phase 3: 핵심 사용자 기능 + 추가 콘텐츠 (5~7일) - ⏳ 미완료 (다음 집중)
-### Day 1~2: 북마크 (1~2일) ⏳
-- [ ] Bookmark model + Hive box
-- [ ] 북마크 추가/삭제 버튼 in viewer
-- [ ] 북마크 목록 화면
+## Phase 3: 핵심 사용자 기능 + 추가 콘텐츠 (5~7일) ✅ 완료
+### 북마크 ✅
+- [x] Bookmark 모델 + Hive + CRUD + viewer toggle + 목록 화면
 
-### Day 1~2: 북마크 기능 (1~2일) ⏳
-- [ ] Bookmark 모델 (lib/models/bible_bookmark.dart) 생성 + @HiveType 어노테이션
-- [ ] Hive box 'bookmarks' 열기 및 CRUD 메서드 구현 (BibleProvider에 추가)
-- [ ] VerseViewerScreen에 북마크 토글 버튼 추가 (현재 장/절 저장)
-- [ ] 북마크 목록 전용 화면 구현 (리스트 + 클릭 시 해당 verse로 이동)
+### 설정 + 폴리싱 ✅
+- [x] SettingsScreen: 글꼴 크기 슬라이더 (0.8~2.0, 시스템 연동), 다크모드, 고대비 스위치
+- [ ] 검색 결과 UI 하이라이트 개선 (snippets 스타일링) - remaining
 
-### Day 2~3: 설정 화면 + 검색 결과 polish (1~2일) ⏳ (기본 검색 있음)
-- [ ] SettingsScreen 생성: 글꼴 크기 슬라이더, 다크모드 스위치 (shared_preferences 사용 준비)
-- [ ] 검색 결과 카드 UI 개선 (snippets 하이라이트 스타일링)
-- [ ] VerseMatch 클릭 시 정확한 장/절 이동 + 스크롤 로직 강화
-- [ ] AppBar/설정에서 테마 즉시 적용
+### 찬송가 ✅
+- [x] Hymn 모델 + hymns.json (PD samples)
+- [x] 목록 (검색 + 즐겨찾기)
+- [x] 상세 (가사 + placeholder)
+- [ ] 즐겨찾기 하이라이트 기능 (목록 강조 + 상세 하이라이트)
+- [ ] assets/images/hymns/ 실제 이미지
 
-### Day 3~4: 찬송가 가사 및 악보 보기 (2일) ⏳
-- [ ] Hymn 모델 정의 + assets/data/hymns.json (또는 간단 샘플 데이터) 준비
-- [ ] 찬송가 목록 화면 (제목/가사 검색 필터)
-- [ ] 가사 상세 보기 화면 구현 (텍스트 + 악보 이미지 표시 지원)
-- [ ] assets/images/hymns/ 폴더 구조 + 샘플 악보 이미지 경로 연결
+### 사도신경 / 주기도문 / 교독문 / About ✅
+- [x] Dual version screens (개역한글/개역개정)
+- [x] Responsive reading
+- [x] AboutScreen
+- [x] Bottom nav with 예배자료 tab + popup
 
-### Day 4~5: 사도신경 / 주기도문 / 교독문 (1~2일) ⏳
-- [ ] ApostlesCreedScreen 구현 (전문 표시, 복사 버튼, 읽기 편한 스타일)
-- [ ] LordsPrayerScreen 구현
-- [ ] ResponsiveReadingScreen: 교독문 목록 + 상세 (인도자/회중 구분 표시)
-- [ ] "예배 자료" 메뉴 또는 별도 탭으로 3개 콘텐츠 통합 접근
-
-### Day 5~6: "이 성경앱에 대해서" + 통합 + 범위 검증 (1일) ⏳
-- [ ] AboutScreen 구현: 앱 설명, Public Domain 데이터 출처, 버전 표시, 라이선스, 피드백 링크
-- [ ] BottomNavigationBar 재설계 (성경 | 예배자료 | 북마크 | 설정)
-- [ ] Integration test 및 "메모/하이라이트 메모 기능 완전 배제" 확인, 불필요 코드 삭제
+### 통합 ✅
+- [x] BottomNavigationBar (5 tabs)
+- [x] Theme + scale + high contrast
+- [x] Phase 3 scope verification (no memos)
 
 ## Phase 4: UI/UX 고도화 (4~6일) - ⏳ 미완료
 ### Day 1: 다크모드 구현 (1일) ⏳
@@ -176,16 +166,19 @@ Phase 4-5:   [░░░░░░░░░░]   0%
 - [ ] Stats screen (chapters read, time)
 
 ## 진행 상황 추적 (시각적 명확화)
-- **전체 대비**: Phase 0-2 완료 (~40%)
-- **완료된 상태**: Phase 1 (데이터 계층 전체 ✅), Phase 2 (기본 UI 전체 ✅, 검색/홈/디자인 개선 포함)
-- **남은 것**: Phase 3 (사용자 기능 ⏳), Phase 4 (고도화 ⏳), Phase 5 (배포 ⏳)
+- **전체 대비**: ~65% (Phase 0-3 ✅, Phase 4 시작)
+- **완료된 상태**: Phase 0-3 (북마크, hymns with fav+search, dual creeds/prayers, about, bottom nav 5 tabs, theme+dark+font+highContrast, loading/error basics, responsive start)
+- **추가 백로그**: 즐겨찾기 하이라이트
+- **남은 것**: Phase 4 (고도화: dark polish, full accessibility, full responsive, branding, more error/loading), Phase 5 (배포)
 - **당장 다음 할일 (상세, <1주 단위)**: 
-  1. Phase 3 Day1~2: Bookmark model + Hive box + viewer 버튼 + 목록 구현
-  2. Phase 3 Day2~3: Settings screen + 검색 결과 polish 구현
-  3. 찬송가/사도신경/주기도문/교독문/About 페이지 추가
-- **시각적 트래킹** (매 스킬 실행시 갱신):
-  로드맵: [████████░░░░░░░░░░░░░░░░] 40% 완료
-  Phase별: Phase1 ██████████ 100% | Phase2 ██████████ 100% | Phase3 ░░░░░░░░░░ 0% | ...
+  1. 즐겨찾기 하이라이트 구현 (hymn/bookmark 강조)
+  2. Phase 4: dark color customization + full responsive (book/verse screens)
+  3. Accessibility expansion (more Semantics, test scales)
+  4. Loading/error across all screens
+  5. Branding: prepare icon.png + generate
+- **시각적 트래킹**:
+  로드맵: [█████████████░░░░░░░] ~65%
+  Phase별: 0-3 █████████████ 95% | 4 ░░░░░ 10% | 5 ░░░░░ 0%
 - 주간 리뷰 시 이 파일 + PPTX 업데이트
 
-**다음 실행 추천**: Phase 3부터 순차 (북마크 → 설정/검색 → 찬송가/신경/기도/교독문/About). 메모 기능 완전 제외. 모든 주요 Phase 완료 후 스킬 재실행.
+**다음 실행 추천**: Phase 4 고도화 + favorites highlight. 모든 Phase 후 roadmap-pptx + commit.

@@ -21,39 +21,49 @@ class ChapterListScreen extends StatelessWidget {
           child: Text(provider.version, style: const TextStyle(fontSize: 12, color: Colors.white70)),
         ),
       ),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(12),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 6,  // denser grid for smaller, more tappable items
-          childAspectRatio: 1.0,
-          crossAxisSpacing: 8,
-          mainAxisSpacing: 8,
-        ),
-        itemCount: book.chapters.length,
-        itemBuilder: (context, index) {
-          return InkWell(
-            onTap: () {
-              provider.setCurrentChapter(index);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => VerseViewerScreen(bookIndex: bookIndex, chapterIndex: index),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          int crossAxisCount = 6;
+          if (constraints.maxWidth < 600) {
+            crossAxisCount = 4;
+          } else if (constraints.maxWidth > 900) {
+            crossAxisCount = 8;
+          }
+          return GridView.builder(
+            padding: const EdgeInsets.all(12),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: crossAxisCount,
+              childAspectRatio: 1.0,
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 8,
+            ),
+            itemCount: book.chapters.length,
+            itemBuilder: (context, index) {
+              return InkWell(
+                onTap: () {
+                  provider.setCurrentChapter(index);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => VerseViewerScreen(bookIndex: bookIndex, chapterIndex: index),
+                    ),
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.grey.shade300, width: 1),
+                  ),
+                  child: Center(
+                    child: Text(
+                      '${index + 1}',
+                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                    ),
+                  ),
                 ),
               );
             },
-            child: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.grey.shade300, width: 1),
-              ),
-              child: Center(
-                child: Text(
-                  '${index + 1}',
-                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-                ),
-              ),
-            ),
           );
         },
       ),

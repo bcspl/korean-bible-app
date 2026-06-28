@@ -3,10 +3,12 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'models/bible_book.dart';
+import 'models/bible_bookmark.dart';
 import 'models/bible_chapter.dart';
 import 'models/bible_verse.dart';
 import 'providers/bible_provider.dart';
-import 'screens/book_list_screen.dart';
+import 'providers/theme_provider.dart';
+import 'screens/main_screen.dart';
 import 'services/bible_data_service.dart';
 
 void main() async {
@@ -17,14 +19,22 @@ void main() async {
   Hive.registerAdapter(BibleVerseAdapter());
   Hive.registerAdapter(BibleChapterAdapter());
   Hive.registerAdapter(BibleBookAdapter());
+  Hive.registerAdapter(BibleBookmarkAdapter());
 
   // Load JSON data and seed Hive (Phase 1 - JSON loader)
   final bibleService = BibleDataService();
   await bibleService.loadAndSeedBibleData();
 
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => BibleProvider()..loadBooks(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => BibleProvider()..loadBooks(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ThemeProvider(),
+        ),
+      ],
       child: const KoreanBibleApp(),
     ),
   );
@@ -35,18 +45,39 @@ class KoreanBibleApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: '한국어 성경',
-      theme: ThemeData(
-        primarySwatch: Colors.indigo,
-        brightness: Brightness.light,
-        // Large fonts for accessibility (as planned in docs)
-        textTheme: const TextTheme(
-          bodyLarge: TextStyle(fontSize: 18.0),
-        ),
-      ),
-      darkTheme: ThemeData.dark(),
-      home: const HomeScreen(),
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, _) {
+        return MaterialApp(
+          title: '한국어 성경',
+          theme: ThemeData(
+            primarySwatch: Colors.indigo,
+            brightness: Brightness.light,
+            // Large fonts for accessibility (as planned in docs)
+            textTheme: const TextTheme(
+              bodyLarge: TextStyle(fontSize: 18.0),
+            ),
+          ),
+          darkTheme: ThemeData(
+            brightness: Brightness.dark,
+            primarySwatch: Colors.indigo,
+            textTheme: const TextTheme(
+              bodyLarge: TextStyle(fontSize: 18.0),
+            ),
+          ),
+          themeMode: themeProvider.themeMode,
+          builder: (context, child) {
+            final mediaQuery = MediaQuery.of(context);
+            final effectiveScale = themeProvider.textScaleFactor * mediaQuery.textScaler.scale(1.0);
+            return MediaQuery(
+              data: mediaQuery.copyWith(
+                textScaler: TextScaler.linear(effectiveScale),
+              ),
+              child: child!,
+            );
+          },
+          home: const HomeScreen(),
+        );
+      },
     );
   }
 }
@@ -56,7 +87,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const BookListScreen();  // Phase 2: 기본 성경 읽기 UI entry
+    return const MainScreen();  // Phase 3: Bottom nav with 성경 / 찬송가 / 북마크 / 설정
   }
 }
 

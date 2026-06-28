@@ -1,5 +1,11 @@
-﻿import 'package:flutter/material.dart';
+﻿import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import '../models/bible_book.dart';
+import '../models/bible_bookmark.dart';
+import '../models/hymn.dart';
 import '../services/bible_data_service.dart';
 
 // Full Bible book names mapping (key from JSON -> Korean, English full)
@@ -82,21 +88,139 @@ class BibleProvider with ChangeNotifier {
   int _currentBookIndex = 0;
   int _currentChapterIndex = 0;
 
+  bool _isLoading = false;
+  bool _hasError = false;
+  String _errorMessage = '';
+
   List<BibleBook> get books => _books;
+  bool get isLoading => _isLoading;
+  bool get hasError => _hasError;
+  String get errorMessage => _errorMessage;
+
   BibleBook? get currentBook => _books.isNotEmpty ? _books[_currentBookIndex] : null;
   int get currentBookIndex => _currentBookIndex;
   int get currentChapterIndex => _currentChapterIndex;
+
+  List<BibleBookmark> _bookmarks = [];
+  List<BibleBookmark> get bookmarks => List.unmodifiable(_bookmarks);
+
+  List<Hymn> _hymns = [];
+  List<Hymn> get hymns => List.unmodifiable(_hymns);
+
+  List<int> _favoriteHymnIds = [];
+  List<Hymn> get favoriteHymns => _hymns.where((h) => _favoriteHymnIds.contains(h.id)).toList();
 
   String get version => BibleDataService().currentVersion;
 
   Future<void> loadBooks() async {
     if (_books.isNotEmpty) return;
-    final service = BibleDataService();
-    _books = await service.getBooks();
-    if (_books.isEmpty) {
-      _books = await service.loadAndSeedBibleData();
+    _isLoading = true;
+    _hasError = false;
+    notifyListeners();
+    try {
+      final service = BibleDataService();
+      _books = await service.getBooks();
+      if (_books.isEmpty) {
+        _books = await service.loadAndSeedBibleData();
+      }
+      await loadBookmarks();
+      await loadHymns();
+    } catch (e) {
+      _hasError = true;
+      _errorMessage = e.toString();
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> loadBookmarks() async {
+    final box = await Hive.openBox<BibleBookmark>('bookmarks');
+    _bookmarks = box.values.toList()
+      ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+  }
+
+  Future<void> loadHymns() async {
+    if (_hymns.isNotEmpty) return;
+    try {
+      final jsonString = await rootBundle.loadString('assets/data/hymns.json');
+      final jsonMap = jsonDecode(jsonString) as Map<String, dynamic>;
+      final list = (jsonMap['hymns'] as List<dynamic>)
+          .map((e) => Hymn.fromJson(e as Map<String, dynamic>))
+          .toList();
+      _hymns = list;
+    } catch (e) {
+      _hymns = [];
+    }
+    await loadHymnFavorites();
+    notifyListeners();
+  }
+
+  Future<void> loadHymnFavorites() async {
+    final box = await Hive.openBox<int>('hymn_favorites');
+    _favoriteHymnIds = box.values.toList();
+  }
+
+  Future<void> toggleHymnFavorite(int hymnId) async {
+    final box = await Hive.openBox<int>('hymn_favorites');
+    if (_favoriteHymnIds.contains(hymnId)) {
+      _favoriteHymnIds.remove(hymnId);
+      await box.delete(hymnId);
+    } else {
+      _favoriteHymnIds.add(hymnId);
+      await box.put(hymnId, hymnId);
     }
     notifyListeners();
+  }
+
+  Future<void> addBookmark(BibleBookmark bookmark) async {
+    final box = await Hive.openBox<BibleBookmark>('bookmarks');
+    // Remove duplicate for same position
+    for (var key in box.keys) {
+      final existing = box.get(key);
+      if (existing != null &&
+          existing.bookIndex == bookmark.bookIndex &&
+          existing.chapterIndex == bookmark.chapterIndex &&
+          existing.verseIndex == bookmark.verseIndex) {
+        await box.delete(key);
+        break;
+      }
+    }
+    await box.add(bookmark);
+    _bookmarks = box.values.toList()
+      ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    notifyListeners();
+  }
+
+  Future<void> removeBookmark(BibleBookmark bookmark) async {
+    final box = await Hive.openBox<BibleBookmark>('bookmarks');
+    for (var key in box.keys) {
+      final existing = box.get(key);
+      if (existing != null &&
+          existing.bookIndex == bookmark.bookIndex &&
+          existing.chapterIndex == bookmark.chapterIndex &&
+          existing.verseIndex == bookmark.verseIndex) {
+        await box.delete(key);
+        break;
+      }
+    }
+    _bookmarks = box.values.toList()
+      ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    notifyListeners();
+  }
+
+  bool isVerseBookmarked(int bookIndex, int chapterIndex, int verseIndex) {
+    return _bookmarks.any((b) =>
+        b.bookIndex == bookIndex &&
+        b.chapterIndex == chapterIndex &&
+        b.verseIndex == verseIndex);
+  }
+
+  bool isChapterBookmarked(int bookIndex, int chapterIndex) {
+    return _bookmarks.any((b) =>
+        b.bookIndex == bookIndex &&
+        b.chapterIndex == chapterIndex &&
+        b.verseIndex == null);
   }
 
   void setCurrentBook(int index) {

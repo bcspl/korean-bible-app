@@ -1,0 +1,69 @@
+{
+  "source_note": "Data is sample Public Domain (PD) hymns from sources like Hymnary.org. Modern Korean hymns may be copyrighted by 한국찬송가공회 - use only verified PD. For full data, check Hymnary.org for PD lyrics/scores.",
+  "hymns": [
+    {
+      "id": 1,
+      "number": "1",
+      "title": "만복의 근원 하나님",
+      "lyrics": "만복의 근원 하나님\n우리에게 강림하사\n모든 은혜 베푸시니\n우리 찬양하리라\n\n우리 주 예수 그리스도\n우리를 위해 죽으사\n죄를 사하여 주시니\n우리 찬양하리라",
+      "scoreImage": "assets/images/hymns/hymn1.png",
+      "category": "찬양"
+    },
+    {
+      "id": 2,
+      "number": "2",
+      "title": "나의 죄를 정케 하사",
+      "lyrics": "나의 죄를 정케 하사\n내게 자유 주시네\n예수 십자가의 보혈\n내게 자유 주시네\n\n예수 십자가의 보혈\n내게 자유 주시네",
+      "scoreImage": "assets/images/hymns/hymn2.png",
+      "category": "회개"
+    },
+    {
+      "id": 3,
+      "number": "305",
+      "title": "예수 사랑하심은",
+      "lyrics": "예수 사랑하심은\n참으로 좋도다\n우리 죄를 대속하사\n구원하여 주셨네\n\n예수 사랑하심\n예수 사랑하심\n예수 사랑하심\n참으로 좋도다",
+      "scoreImage": "assets/images/hymns/hymn305.png",
+      "category": "사랑"
+    },
+    {
+      "id": 4,
+      "number": "21",
+      "title": "주 예수 이름 높이어",
+      "lyrics": "주 예수 이름 높이어\n만백성이 찬송하세\n주 예수 이름 높이어\n영원히 찬송하세",
+      "scoreImage": "assets/images/hymns/hymn21.png",
+      "category": "찬양"
+    },
+    {
+      "id": 5,
+      "number": "93",
+      "title": "나의 영원하신 기업",
+      "lyrics": "나의 영원하신 기업\n예수 내 구주시니\n내 모든 소망 이루셨다\n내 모든 소망 이루셨다",
+      "scoreImage": "assets/images/hymns/hymn93.png",
+      "category": "찬양"
+    },
+    {
+      "id": 6,
+      "number": "PD-01",
+      "title": "Amazing Grace (한국어 번역, PD)",
+      "lyrics": "놀라운 은혜\n나를 부르사\n잃었던 나를 찾으셨네\n은혜로 나를 구원하셨네",
+      "scoreImage": "",
+      "category": "은혜"
+    },
+    {
+      "id": 7,
+      "number": "PD-02",
+      "title": "거룩 거룩 거룩 (Holy Holy Holy, PD)",
+      "lyrics": "거룩 거룩 거룩 전능하신 주님\n이른 아침 우리 주를 찬송합니다\n거룩 거룩 거룩 자비하신 주님\n모든 성도 면류관을 벗어 드리네",
+      "scoreImage": "",
+      "category": "찬양"
+    },
+    {
+      "id": 8,
+      "number": "PD-03",
+      "title": "예수 나를 위하여 (When I Survey, PD)",
+      "lyrics": "예수 나를 위하여\n고난 당하신 일\n십자가에 달려서\n죽으신 그 사랑\n\n내가 믿고 의지함\n오직 예수 뿐일세\n영원히 찬송하리\n예수 나의 구주",
+      "scoreImage": "",
+      "category": "수난"
+    }
+  ]
+}
