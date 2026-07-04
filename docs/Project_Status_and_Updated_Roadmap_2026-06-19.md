@@ -1,12 +1,21 @@
 # Korean Bible App Project - 종합 현황 및 로드맵 (Updated 2026-06-27)
 
-**현재 진행 상황 요약 (2026-06-28 업데이트)**:
-- **전체 대비**: ~65% 완료 (Phase 0-3 ✅, Phase 4 초기)
-- **시각적 진행**: [█████████████░░░░░░░] ~65%
-- **완료**: Phase 0-3 (북마크, hymns+search+fav, dual creeds/prayers/responsive, About, 5-tab BottomNav, ThemeProvider with dark/font/highContrast, basic loading/error + responsive start). 
-- **추가된 백로그**: 즐겨찾기 하이라이트 (hymn/bookmark 강조)
-- **당장 다음 (상세)**: Phase 4 (dark polish, full responsive, accessibility expand, loading/error full, branding)
-- **남은**: Phase 4-5 (고도화, 배포)
+**현재 진행 상황 요약 (2026-07-04 업데이트)**:
+- **전체 대비**: ~88% 완료 (Phase 0-4 대부분 완료, Phase 5 준비 단계)
+- **시각적 진행**: [█████████████████░░░] ~88%
+- **완료**: 
+  - Phase 0-3 완전 (성경 데이터, 읽기 UI, 북마크, 찬송가, 예배자료, About, BottomNav 5탭)
+  - Phase 4: 
+    - Branding (icon.png 생성 + flutter_launcher_icons / native_splash 실행 완료)
+    - Dark mode polish + highContrast 개선
+    - Responsive (대부분 화면에 LayoutBuilder/MediaQuery 적용)
+    - Accessibility (Semantics 추가, highContrast 효과 강화)
+    - Loading/Error UI 확장 (hymn, settings, worship, bookmark 등)
+    - Hymns 대폭 확장 (다운로더 스크립트 + 35곡 PD 데이터 + 메타데이터)
+    - Hymn list 스크롤 최적화 (debounce, O(1) fav lookup, tileColor, keys)
+- **현재 hymns**: 35곡 (Public Domain 중심, downloader로 쉽게 확장 가능)
+- **당장 다음 (상세)**: Phase 5 (Android/iOS/Web 빌드, 스토어 준비), 추가 PD hymns (CSV import), 남은 화면 polish
+- **남은 주요**: Phase 5 (배포 준비)
 
 ## 프로젝트 개요
 **완전 무료 오프라인 한국어 성경 앱**  
@@ -20,20 +29,20 @@ Public Domain 데이터(개역개정 등)를 사용하여 인터넷 없이도 �
 
 ### 진행률 시각화
 ```
-전체 로드맵 (Phase 0-5): [████████████░░░░░░░░░░░░] ~60% 완료
+전체 로드맵 (Phase 0-5): [█████████████████░░░] ~88% 완료
 Phase 0: ██████████ 100% ✅ (기반)
-Phase 1: ██████████ 100% ✅ (데이터 계층: 모델+어댑터+JSON 로더)
-Phase 2: ██████████ 100% ✅ (기본 읽기 UI + 검색 + 홈 + 디자인)
-Phase 3: ██████████ 90% ✅ (북마크, 찬송가/신경/기도/교독문/About, BottomNav, 다크+글꼴 설정)
-Phase 4: ░░░░░░░░░░   0% ⏳ (고도화 - 다음)
-Phase 5: ░░░░░░░░░░   0% ⏳ (배포)
+Phase 1: ██████████ 100% ✅ (데이터 계층)
+Phase 2: ██████████ 100% ✅ (기본 읽기 UI)
+Phase 3: ██████████ 100% ✅ (북마크, hymns, 예배자료, About, BottomNav)
+Phase 4: ████████████ 85% ✅ (branding, responsive, accessibility, loading/error, dark polish, hymns 확장+스크롤 최적화)
+Phase 5: ████░░░░░░ 15% ⏳ (빌드/배포 준비)
 ```
 
-**당장 다음 할 일 (상세, <1주 단위, 전체 대비)**:
-1. Phase 4 Day1: 접근성 (Semantics, screen reader labels, high contrast)
-2. Phase 4 Day2-3: 상태 처리 (loading indicator, error/retry UI)
-3. Phase 4 Day3-5: 반응형 레이아웃 (LayoutBuilder, padding sizes)
-4. 브랜딩 (icon, splash)
+**당장 다음 할 일 (상세, <1주 단위)**:
+1. Phase 5: Android 빌드 + 테스트
+2. Phase 5: iOS/Web 빌드 + PWA
+3. 추가 PD hymns 대량 import (Hymnary CSV)
+4. 스토어 에셋 (스크린샷, 설명) 준비
 
 ## 마일스톤 및 일정 (Gantt 스타일)
 **주요 마일스톤**:

@@ -10,16 +10,20 @@ class BookmarkListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = Provider.of<BibleProvider>(context);
     final bookmarks = provider.bookmarks;
+    final width = MediaQuery.of(context).size.width;
+    final pad = width > 900 ? 32.0 : (width > 600 ? 24.0 : 16.0);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('북마크'),
       ),
-      body: bookmarks.isEmpty
-          ? const Center(
-              child: Text('저장된 북마크가 없습니다.\n성경 본문에서 북마크 아이콘을 눌러 추가하세요.'),
-            )
-          : ListView.builder(
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: pad),
+        child: bookmarks.isEmpty
+            ? const Center(
+                child: Text('저장된 북마크가 없습니다.\n성경 본문에서 북마크 아이콘을 눌러 추가하세요.'),
+              )
+            : ListView.builder(
               itemCount: bookmarks.length,
               itemBuilder: (context, index) {
                 final bm = bookmarks[index];
@@ -56,6 +60,7 @@ class BookmarkListScreen extends StatelessWidget {
                 );
               },
             ),
+      ),
     );
   }
 }

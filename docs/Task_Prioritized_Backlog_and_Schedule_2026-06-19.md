@@ -2,22 +2,27 @@
 
 > **참고**: 전체 로드맵은 `Project_Status_and_Updated_Roadmap_2026-06-19.md` 참조
 
-## 현재 진행 상황 요약 (2026-06-27, /roadmap-pptx 재실행 - 코드 상태 검사 완료)
-**전체 로드맵 대비 진행률**: ~60% 완료 (Phase 0-3 대부분 ✅)
-- ✅ 완료: Phase 0-2 + Phase 3 (북마크, 찬송가 검색+즐겨찾기, 신경/기도/교독문 dual, About, BottomNav, 다크모드+글꼴 슬라이더)
-- 🔄 진행중: Phase 4 고도화 시작
-- ⏳ 남은 주요: Phase 4 (접근성, 로딩/에러, 반응형, 브랜딩), Phase 5 (배포)
+## 현재 진행 상황 요약 (2026-07-04, 작업 완료 후 업데이트)
+**전체 로드맵 대비 진행률**: ~88% 완료
+- ✅ 완료: Phase 0-3 전부 + Phase 4 대부분
+  - hymns: downloader 스크립트 + 35곡 PD 데이터 + UI (메타데이터 표시, 스크롤 최적화, debounce, O(1) fav lookup)
+  - Branding: icon.png + flutter_launcher_icons + native_splash 완료
+  - Responsive: 주요 화면 (settings, bookmark, worship, hymn_detail, about 등) LayoutBuilder 적용
+  - Accessibility: Semantics 추가, highContrast 효과 강화
+  - Loading/Error: hymn/settings/worship/bookmark 등 확장
+  - Dark polish + tests 확장 (5개 테스트 all pass)
+- ⏳ 남은: Phase 5 (플랫폼 빌드, 스토어), 추가 hymns import, 잔여 polish
 - **당장 다음 할 일 (우선순위 Top 3)**:
-  1. Phase 4: 접근성 강화 (Semantics, high contrast)
-  2. Phase 4: 로딩/에러 UI + 반응형
-  3. 설정 폰트 크기 완성 (이미 slider 추가됨) + 예배자료 BottomNav 통합
+  1. Phase 5: Android 빌드/테스트 + signing
+  2. Phase 5: iOS + Web 빌드
+  3. Hymnary CSV로 hymns 100곡+ 확장 + docs/PPTX 최종 동기화
 
 **시각적 진행 표시**:
 ```
-로드맵 전체: [█████████████░░░░░░░] ~65%
-Phase 0-3:   [█████████████] 95% ✅
-Phase 4:     [░░] 10% ⏳
-Phase 5:     [░] 0% ⏳
+로드맵 전체: [█████████████████░░░] ~88%
+Phase 0-3:   [█████████████] 100% ✅
+Phase 4:     [██████████] 85% ✅
+Phase 5:     [███░░░░░░░] 15% ⏳
 ```
 
 ## Phase 1: 데이터 계층 (최우선, 4~5일) - ✅ 완료 (2026-06-27)

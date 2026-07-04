@@ -5,19 +5,21 @@ class AboutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final pad = width > 900 ? 32.0 : (width > 600 ? 24.0 : 16.0);
     return Scaffold(
       appBar: AppBar(title: const Text('이 성경앱에 대해서')),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(pad),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 '한국어 성경 앱',
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 8),
               Text('완전 무료 • 오프라인 • Public Domain (개역개정)'),
               SizedBox(height: 16),
               Text(

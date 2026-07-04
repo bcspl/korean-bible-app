@@ -11,7 +11,10 @@ class SettingsScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('설정')),
       body: Consumer<ThemeProvider>(
         builder: (context, themeProvider, _) {
+          final width = MediaQuery.of(context).size.width;
+          final horizontalPad = width > 900 ? 32.0 : (width > 600 ? 24.0 : 16.0);
           return ListView(
+            padding: EdgeInsets.symmetric(horizontal: horizontalPad),
             children: [
               ListTile(
                 leading: const Icon(Icons.text_fields),
@@ -44,21 +47,27 @@ class SettingsScreen extends StatelessWidget {
                 onTap: () => themeProvider.resetToSystem(),
               ),
               const Divider(),
-              SwitchListTile(
-                title: const Text('다크 모드'),
-                subtitle: Text(themeProvider.isDarkMode ? '다크 모드 활성화' : '라이트 모드'),
-                value: themeProvider.isDarkMode,
-                onChanged: (value) {
-                  themeProvider.toggleTheme(value);
-                },
+              Semantics(
+                label: '다크 모드 토글',
+                child: SwitchListTile(
+                  title: const Text('다크 모드'),
+                  subtitle: Text(themeProvider.isDarkMode ? '다크 모드 활성화' : '라이트 모드'),
+                  value: themeProvider.isDarkMode,
+                  onChanged: (value) {
+                    themeProvider.toggleTheme(value);
+                  },
+                ),
               ),
-              SwitchListTile(
-                title: const Text('고대비 모드'),
-                subtitle: const Text('접근성 향상 (더 강한 대비)'),
-                value: themeProvider.highContrast,
-                onChanged: (value) {
-                  themeProvider.toggleHighContrast(value);
-                },
+              Semantics(
+                label: '고대비 모드 토글, 접근성 향상',
+                child: SwitchListTile(
+                  title: const Text('고대비 모드'),
+                  subtitle: const Text('접근성 향상 (더 강한 대비)'),
+                  value: themeProvider.highContrast,
+                  onChanged: (value) {
+                    themeProvider.toggleHighContrast(value);
+                  },
+                ),
               ),
               const Divider(),
               const ListTile(

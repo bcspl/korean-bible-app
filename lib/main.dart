@@ -9,7 +9,6 @@ import 'models/bible_verse.dart';
 import 'providers/bible_provider.dart';
 import 'providers/theme_provider.dart';
 import 'screens/main_screen.dart';
-import 'services/bible_data_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,15 +20,19 @@ void main() async {
   Hive.registerAdapter(BibleBookAdapter());
   Hive.registerAdapter(BibleBookmarkAdapter());
 
-  // Load JSON data and seed Hive (Phase 1 - JSON loader)
-  final bibleService = BibleDataService();
-  await bibleService.loadAndSeedBibleData();
+  // Note: Bible data seeding moved to BibleProvider.loadBooks() to avoid blocking app start.
+  // UI will show loading indicator while large JSON/Hive seed happens on first run.
 
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => BibleProvider()..loadBooks(),
+          create: (_) {
+            final provider = BibleProvider();
+            // Fire-and-forget load; errors are caught inside loadBooks() and exposed via hasError
+            provider.loadBooks().catchError((_) {});
+            return provider;
+          },
         ),
         ChangeNotifierProvider(
           create: (_) => ThemeProvider(),
@@ -47,6 +50,32 @@ class KoreanBibleApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<ThemeProvider>(
       builder: (context, themeProvider, _) {
+        final isHighContrast = themeProvider.highContrast;
+        final darkBase = ThemeData(
+          brightness: Brightness.dark,
+          primarySwatch: Colors.indigo,
+          scaffoldBackgroundColor: isHighContrast ? Colors.black : const Color(0xFF121212),
+          cardColor: isHighContrast ? const Color(0xFF1A1A1A) : const Color(0xFF2C2C2C),
+          textTheme: TextTheme(
+            bodyLarge: TextStyle(
+              fontSize: 18.0,
+              color: isHighContrast ? Colors.white : const Color(0xFFEEEEEE),
+              height: 1.5,
+            ),
+            bodyMedium: TextStyle(
+              color: isHighContrast ? const Color(0xFFCCCCCC) : const Color(0xFFBBBBBB),
+            ),
+          ),
+          colorScheme: ColorScheme.dark(
+            primary: Colors.indigo,
+            secondary: Colors.indigoAccent,
+            surface: isHighContrast ? const Color(0xFF1A1A1A) : const Color(0xFF2C2C2C),
+            onSurface: isHighContrast ? Colors.white : const Color(0xFFEEEEEE),
+          ),
+          iconTheme: IconThemeData(
+            color: isHighContrast ? Colors.white : const Color(0xFFBBBBBB),
+          ),
+        );
         return MaterialApp(
           title: '한국어 성경',
           theme: ThemeData(
@@ -57,13 +86,7 @@ class KoreanBibleApp extends StatelessWidget {
               bodyLarge: TextStyle(fontSize: 18.0),
             ),
           ),
-          darkTheme: ThemeData(
-            brightness: Brightness.dark,
-            primarySwatch: Colors.indigo,
-            textTheme: const TextTheme(
-              bodyLarge: TextStyle(fontSize: 18.0),
-            ),
-          ),
+          darkTheme: darkBase,
           themeMode: themeProvider.themeMode,
           builder: (context, child) {
             final mediaQuery = MediaQuery.of(context);

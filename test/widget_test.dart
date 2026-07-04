@@ -86,4 +86,51 @@ void main() {
 
     expect(find.text('다크 모드'), findsOneWidget);
   });
+
+  testWidgets('Hymn list tab shows hymns and search', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => BibleProvider()),
+          ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ],
+        child: const KoreanBibleApp(),
+      ),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+
+    // Tap hymns tab (index 2)
+    await tester.tap(find.byIcon(Icons.music_note));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+
+    // Check bottom nav label and search icon in content
+    expect(find.text('찬송가'), findsWidgets);
+    expect(find.byIcon(Icons.search), findsOneWidget);
+  });
+
+  testWidgets('High contrast toggle updates provider', (WidgetTester tester) async {
+    final themeProvider = ThemeProvider();
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => BibleProvider()),
+          ChangeNotifierProvider(create: (_) => themeProvider),
+        ],
+        child: const KoreanBibleApp(),
+      ),
+    );
+    await tester.pump();
+
+    await tester.tap(find.byIcon(Icons.settings));
+    await tester.pump();
+
+    // Find and tap high contrast switch
+    final switchFinder = find.byType(SwitchListTile).last;
+    await tester.tap(switchFinder);
+    await tester.pump();
+
+    expect(themeProvider.highContrast, true);
+  });
 }

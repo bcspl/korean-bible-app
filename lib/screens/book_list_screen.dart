@@ -98,10 +98,15 @@ class _BookListScreenState extends State<BookListScreen> {
             tooltip: '예배 자료',
             onSelected: (v) {
               Widget screen;
-              if (v == 'creed') screen = const CreedScreen();
-              else if (v == 'prayer') screen = const LordsPrayerScreen();
-              else if (v == 'reading') screen = const ResponsiveReadingScreen();
-              else screen = const AboutScreen();
+              if (v == 'creed') {
+                screen = const CreedScreen();
+              } else if (v == 'prayer') {
+                screen = const LordsPrayerScreen();
+              } else if (v == 'reading') {
+                screen = const ResponsiveReadingScreen();
+              } else {
+                screen = const AboutScreen();
+              }
               Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
             },
             itemBuilder: (c) => const [
@@ -113,11 +118,16 @@ class _BookListScreenState extends State<BookListScreen> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          // Search bar
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final isWide = constraints.maxWidth > 900;
+          final isMedium = constraints.maxWidth > 600;
+          final horizontalPadding = isWide ? 32.0 : (isMedium ? 24.0 : 16.0);
+          return Column(
+            children: [
+              // Search bar
+              Padding(
+                padding: EdgeInsets.fromLTRB(horizontalPadding, 8, horizontalPadding, 8),
             child: TextField(
               decoration: InputDecoration(
                 hintText: '책 이름으로 검색...',
@@ -292,8 +302,10 @@ class _BookListScreenState extends State<BookListScreen> {
             ),
           ),
         ],
-      ),
-    );
+      );
+    },
+  ),
+);
   }
 
   Widget _buildFilterButton(
@@ -348,3 +360,4 @@ class _BookListScreenState extends State<BookListScreen> {
     );
   }
 }
+

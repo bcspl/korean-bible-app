@@ -2,6 +2,7 @@
 import 'package:provider/provider.dart';
 import '../models/bible_bookmark.dart';
 import '../providers/bible_provider.dart';
+import '../providers/theme_provider.dart';
 
 class VerseViewerScreen extends StatefulWidget {
   final int bookIndex;
@@ -124,10 +125,13 @@ class _VerseViewerScreenState extends State<VerseViewerScreen> {
       body: Column(
         children: [
           // Direct prev/next chapter navigation + home
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            color: Colors.grey.shade100,
-            child: Row(
+          Consumer<BibleProvider>(
+            builder: (context, provider, _) => Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              color: provider.isChapterBookmarked(widget.bookIndex, widget.chapterIndex)
+                  ? Colors.yellow.withValues(alpha: 0.15)
+                  : Colors.grey.shade100,
+              child: Row(
               children: [
                 IconButton(
                   icon: const Icon(Icons.home, size: 20),
@@ -170,65 +174,75 @@ class _VerseViewerScreenState extends State<VerseViewerScreen> {
               ],
             ),
           ),
+          ),
           Expanded(
-            child: ListView.builder(
-              controller: _scrollController,
-              padding: const EdgeInsets.all(16),
-              itemCount: chapter.verses.length,
-              itemBuilder: (context, index) {
-                final verse = chapter.verses[index];
-                return Consumer<BibleProvider>(
-                  builder: (context, provider, _) {
-                    final isBookmarked = provider.isVerseBookmarked(
-                        widget.bookIndex, widget.chapterIndex, verse.verse);
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Semantics(
-                              label: '절 ${verse.verse}: ${verse.text}',
-                              child: RichText(
-                                text: TextSpan(
-                                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 17, height: 1.7),
-                                  children: [
-                                    TextSpan(
-                                      text: '${verse.verse} ',
-                                      style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.indigo, fontSize: 15),
+            child: Builder(
+              builder: (context) {
+                final width = MediaQuery.of(context).size.width;
+                final horizontalPad = width > 900 ? 32.0 : (width > 600 ? 24.0 : 16.0);
+                return ListView.builder(
+                  controller: _scrollController,
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPad, vertical: 16),
+                  itemCount: chapter.verses.length,
+                  itemBuilder: (context, index) {
+                    final verse = chapter.verses[index];
+                    return Consumer2<BibleProvider, ThemeProvider>(
+                      builder: (context, bibleProvider, themeProvider, _) {
+                        final isBookmarked = bibleProvider.isVerseBookmarked(
+                            widget.bookIndex, widget.chapterIndex, verse.verse);
+                        return Container(
+                          color: isBookmarked 
+                              ? (themeProvider.highContrast ? Colors.yellow.withValues(alpha: 0.4) : Colors.yellow.withValues(alpha: 0.2)) 
+                              : null,
+                          padding: const EdgeInsets.symmetric(vertical: 4),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Semantics(
+                                  label: '절 ${verse.verse}: ${verse.text}',
+                                  child: RichText(
+                                    text: TextSpan(
+                                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 17, height: 1.7),
+                                      children: [
+                                        TextSpan(
+                                          text: '${verse.verse} ',
+                                          style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.indigo, fontSize: 15),
+                                        ),
+                                        TextSpan(text: verse.text),
+                                      ],
                                     ),
-                                    TextSpan(text: verse.text),
-                                  ],
+                                  ),
                                 ),
                               ),
-                            ),
+                              IconButton(
+                                icon: Icon(
+                                  isBookmarked ? Icons.bookmark : Icons.bookmark_border,
+                                  size: 18,
+                                  color: isBookmarked ? Colors.indigo : Colors.grey,
+                                ),
+                                onPressed: () async {
+                                  final snippet = '${verse.verse} ${verse.text.length > 30 ? '${verse.text.substring(0, 30)}...' : verse.text}';
+                                  final bm = BibleBookmark(
+                                    bookIndex: widget.bookIndex,
+                                    chapterIndex: widget.chapterIndex,
+                                    verseIndex: verse.verse,
+                                    snippet: snippet,
+                                    createdAt: DateTime.now(),
+                                  );
+                                  if (isBookmarked) {
+                                    await bibleProvider.removeBookmark(bm);
+                                  } else {
+                                    await bibleProvider.addBookmark(bm);
+                                  }
+                                },
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                              ),
+                            ],
                           ),
-                          IconButton(
-                            icon: Icon(
-                              isBookmarked ? Icons.bookmark : Icons.bookmark_border,
-                              size: 18,
-                              color: isBookmarked ? Colors.indigo : Colors.grey,
-                            ),
-                            onPressed: () async {
-                              final snippet = '${verse.verse} ${verse.text.length > 30 ? '${verse.text.substring(0, 30)}...' : verse.text}';
-                              final bm = BibleBookmark(
-                                bookIndex: widget.bookIndex,
-                                chapterIndex: widget.chapterIndex,
-                                verseIndex: verse.verse,
-                                snippet: snippet,
-                                createdAt: DateTime.now(),
-                              );
-                              if (isBookmarked) {
-                                await provider.removeBookmark(bm);
-                              } else {
-                                await provider.addBookmark(bm);
-                              }
-                            },
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
-                          ),
-                        ],
-                      ),
+                        );
+                      },
                     );
                   },
                 );

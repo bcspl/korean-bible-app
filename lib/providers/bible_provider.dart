@@ -107,10 +107,15 @@ class BibleProvider with ChangeNotifier {
   List<Hymn> _hymns = [];
   List<Hymn> get hymns => List.unmodifiable(_hymns);
 
-  List<int> _favoriteHymnIds = [];
-  List<Hymn> get favoriteHymns => _hymns.where((h) => _favoriteHymnIds.contains(h.id)).toList();
+  String hymnSourceNote = '';
 
-  String get version => BibleDataService().currentVersion;
+  List<int> _favoriteHymnIds = [];
+  Set<int> _favoriteHymnIdSet = {};
+  List<Hymn> get favoriteHymns => _hymns.where((h) => _favoriteHymnIdSet.contains(h.id)).toList();
+
+  bool isHymnFavorite(int id) => _favoriteHymnIdSet.contains(id);
+
+  String get version => BibleDataService.currentVersion;
 
   Future<void> loadBooks() async {
     if (_books.isNotEmpty) return;
@@ -127,7 +132,12 @@ class BibleProvider with ChangeNotifier {
       await loadHymns();
     } catch (e) {
       _hasError = true;
-      _errorMessage = e.toString();
+      final err = e.toString();
+      if (err.contains('lock') || err.contains('PathAccess') || err.contains('access')) {
+        _errorMessage = '데이터 파일이 다른 프로세스에 의해 잠겨 있습니다.\n다른 앱 인스턴스를 종료하거나 컴퓨터를 재시작 후 다시 시도하세요.';
+      } else {
+        _errorMessage = err;
+      }
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -145,12 +155,14 @@ class BibleProvider with ChangeNotifier {
     try {
       final jsonString = await rootBundle.loadString('assets/data/hymns.json');
       final jsonMap = jsonDecode(jsonString) as Map<String, dynamic>;
+      hymnSourceNote = jsonMap['source_note'] as String? ?? '';
       final list = (jsonMap['hymns'] as List<dynamic>)
           .map((e) => Hymn.fromJson(e as Map<String, dynamic>))
           .toList();
       _hymns = list;
     } catch (e) {
       _hymns = [];
+      hymnSourceNote = '';
     }
     await loadHymnFavorites();
     notifyListeners();
@@ -159,15 +171,18 @@ class BibleProvider with ChangeNotifier {
   Future<void> loadHymnFavorites() async {
     final box = await Hive.openBox<int>('hymn_favorites');
     _favoriteHymnIds = box.values.toList();
+    _favoriteHymnIdSet = _favoriteHymnIds.toSet();
   }
 
   Future<void> toggleHymnFavorite(int hymnId) async {
     final box = await Hive.openBox<int>('hymn_favorites');
-    if (_favoriteHymnIds.contains(hymnId)) {
+    if (_favoriteHymnIdSet.contains(hymnId)) {
       _favoriteHymnIds.remove(hymnId);
+      _favoriteHymnIdSet.remove(hymnId);
       await box.delete(hymnId);
     } else {
       _favoriteHymnIds.add(hymnId);
+      _favoriteHymnIdSet.add(hymnId);
       await box.put(hymnId, hymnId);
     }
     notifyListeners();

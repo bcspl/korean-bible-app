@@ -8,10 +8,14 @@ class WorshipMaterialsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final pad = width > 900 ? 32.0 : (width > 600 ? 24.0 : 16.0);
     return Scaffold(
       appBar: AppBar(title: const Text('예배 자료')),
-      body: ListView(
-        children: [
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: pad),
+        child: ListView(
+          children: [
           ListTile(
             leading: const Icon(Icons.account_balance),
             title: const Text('사도신경'),
@@ -35,6 +39,7 @@ class WorshipMaterialsScreen extends StatelessWidget {
             title: Text('힌트: 찬송가는 별도 탭에서 이용하세요'),
           ),
         ],
+      ),
       ),
     );
   }

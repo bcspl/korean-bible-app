@@ -10,13 +10,15 @@ class HymnDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final pad = width > 900 ? 32.0 : (width > 600 ? 24.0 : 16.0);
     return Scaffold(
       appBar: AppBar(
         title: Text('${hymn.number}. ${hymn.title}'),
         actions: [
           Consumer<BibleProvider>(
             builder: (context, provider, _) {
-              final isFav = provider.favoriteHymns.any((f) => f.id == hymn.id);
+              final isFav = provider.isHymnFavorite(hymn.id);
               return IconButton(
                 icon: Icon(isFav ? Icons.favorite : Icons.favorite_border, color: isFav ? Colors.red : null),
                 onPressed: () => provider.toggleHymnFavorite(hymn.id),
@@ -27,19 +29,64 @@ class HymnDetailScreen extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(pad),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              hymn.title,
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.indigo,
-                  ),
+            Consumer<BibleProvider>(
+              builder: (context, provider, _) {
+                final isFav = provider.isHymnFavorite(hymn.id);
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (isFav)
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        margin: const EdgeInsets.only(bottom: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.indigo.withAlpha(25),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: const Text('⭐ 즐겨찾기', style: TextStyle(color: Colors.indigo, fontSize: 12)),
+                      ),
+                    Text(
+                      hymn.title,
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            fontWeight: isFav ? FontWeight.bold : FontWeight.normal,
+                            color: Colors.indigo,
+                          ),
+                    ),
+                  ],
+                );
+              },
             ),
             const SizedBox(height: 8),
             Text('카테고리: ${hymn.category}', style: const TextStyle(color: Colors.grey)),
+            if (hymn.author != null || hymn.composer != null || hymn.year != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Text(
+                  [
+                    if (hymn.author != null) '작사: ${hymn.author}',
+                    if (hymn.composer != null) '작곡: ${hymn.composer}',
+                    if (hymn.year != null) hymn.year,
+                  ].join('  •  '),
+                  style: const TextStyle(fontSize: 13, color: Colors.grey),
+                ),
+              ),
+            if (hymn.titleEn != null && hymn.titleEn!.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 2),
+                child: Text('English: ${hymn.titleEn}', style: const TextStyle(fontSize: 13, color: Colors.grey)),
+              ),
+            if (hymn.source != null && hymn.source!.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Text(
+                  hymn.source!,
+                  style: const TextStyle(fontSize: 11, color: Colors.indigo, fontStyle: FontStyle.italic),
+                ),
+              ),
             const Divider(height: 32),
             const Text(
               '가사',
