@@ -2,27 +2,26 @@
 
 > **참고**: 전체 로드맵은 `Project_Status_and_Updated_Roadmap_2026-06-19.md` 참조
 
-## 현재 진행 상황 요약 (2026-07-04, 작업 완료 후 업데이트)
-**전체 로드맵 대비 진행률**: ~88% 완료
-- ✅ 완료: Phase 0-3 전부 + Phase 4 대부분
-  - hymns: downloader 스크립트 + 35곡 PD 데이터 + UI (메타데이터 표시, 스크롤 최적화, debounce, O(1) fav lookup)
-  - Branding: icon.png + flutter_launcher_icons + native_splash 완료
-  - Responsive: 주요 화면 (settings, bookmark, worship, hymn_detail, about 등) LayoutBuilder 적용
-  - Accessibility: Semantics 추가, highContrast 효과 강화
-  - Loading/Error: hymn/settings/worship/bookmark 등 확장
-  - Dark polish + tests 확장 (5개 테스트 all pass)
-- ⏳ 남은: Phase 5 (플랫폼 빌드, 스토어), 추가 hymns import, 잔여 polish
+## 현재 진행 상황 요약 (2026-07-04 업데이트)
+**전체 로드맵 대비 진행률**: ~85% 완료
+- ✅ 완료: Phase 0-3 전부 + Phase 4 대부분 (hymns 35곡 + branding + responsive + accessibility + loading/error + dark + scroll fix)
+  - hymns: downloader.py + 35 PD + metadata + list/detail/fav/search/scroll optimize (debounce, O(1))
+  - Branding: icon + generators run
+  - Responsive: 8+ screens (book, chapter, hymn_list, settings, bookmark, worship, hymn_detail, about)
+  - Accessibility: Semantics + highContrast
+  - Loading/Error extended, Dark polish, Tests 5개 pass
+- ⏳ 남은: Phase 5 (builds), hymns 100+ via CSV, full Semantics/responsive polish, store
 - **당장 다음 할 일 (우선순위 Top 3)**:
-  1. Phase 5: Android 빌드/테스트 + signing
-  2. Phase 5: iOS + Web 빌드
-  3. Hymnary CSV로 hymns 100곡+ 확장 + docs/PPTX 최종 동기화
+  1. Phase 5: Android 빌드 + test + signing
+  2. Phase 5: iOS + Web PWA 빌드 + test
+  3. Hymns CSV 확장 (100곡+) + 남은 Phase 4 polish + store assets
 
 **시각적 진행 표시**:
 ```
-로드맵 전체: [█████████████████░░░] ~88%
+로드맵 전체: [████████████████░░░░] ~85%
 Phase 0-3:   [█████████████] 100% ✅
-Phase 4:     [██████████] 85% ✅
-Phase 5:     [███░░░░░░░] 15% ⏳
+Phase 4:     [██████████] 80% ✅
+Phase 5:     [██░░░░░░░░] 10% ⏳
 ```
 
 ## Phase 1: 데이터 계층 (최우선, 4~5일) - ✅ 완료 (2026-06-27)
@@ -103,54 +102,57 @@ Phase 5:     [███░░░░░░░] 15% ⏳
 - [x] Theme + scale + high contrast
 - [x] Phase 3 scope verification (no memos)
 
-## Phase 4: UI/UX 고도화 (4~6일) - ⏳ 미완료
-### Day 1: 다크모드 구현 (1일) ⏳
-- [ ] ThemeProvider 생성 및 light/dark 모드 지원 (Provider로 전환)
-- [ ] 다크모드 색상 스키마 커스터마이즈 및 즉시 토글
+## Phase 4: UI/UX 고도화 (4~6일) - ✅ 80% (2026-07-04)
+### Day 1: 다크모드 + HighContrast (1일) ✅
+- [x] ThemeProvider + 다크모드 + text scale
+- [x] 고대비 모드 + verse/bookmark highlight
+- [x] Dark polish (readability)
 
-### Day 1~2: 접근성 강화 (1~2일) ⏳
-- [ ] 글꼴 크기 동적 스케일 테스트 및 설정 연동
-- [ ] Screen reader 라벨 추가 (Semantics)
-- [ ] 고대비 모드 옵션 추가
+### Day 1~2: Accessibility + Responsive (2일) ✅
+- [x] Semantics (book_list, verse_viewer, settings, hymn_list/detail)
+- [x] highContrast 적용
+- [x] LayoutBuilder/MediaQuery on book, chapter, hymn_list, settings, bookmark, worship, hymn_detail, about (pad 16/24/32)
 
-### Day 2~3: 상태 처리 개선 (1일) ⏳
-- [ ] 데이터 로딩 중 인디케이터 추가 (로딩 화면)
-- [ ] 에러 처리 및 재시도 UI 구현
+### Day 2~3: Loading/Error + Scroll (1일) ✅
+- [x] Loading/error on hymn/settings/worship/bookmark + book_list
+- [x] Hymn list scroll fix (debounce 250ms, provider.isHymnFavorite O(1) Set, tileColor, ValueKey)
 
-### Day 3~5: 반응형 레이아웃 (2일) ⏳
-- [ ] LayoutBuilder 사용 모바일/데스크톱 대응
-- [ ] 패딩/사이즈 반응형 조정
+### Day 3~5: Hymns + Branding (2일) ✅
+- [x] hymn_downloader.py (CSV support)
+- [x] 35 PD hymns + metadata + UI (author, count, better empty states)
+- [x] Branding: icon.png placed + flutter_launcher_icons + native_splash:create
 
-### Day 5~6: 브랜딩 (1일) ⏳
-- [ ] 앱 아이콘 디자인 적용
-- [ ] 스플래시 화면 구현
-- [ ] 런처 이름 업데이트 (pubspec + 플랫폼 설정)
+### Day 5~6: Tests + Docs (1일) ✅
+- [x] 5 widget tests (incl. hymn tab, highContrast)
+- [x] MD + PPTX sync (Gantt, granular)
 
-## Phase 5: 플랫폼 확장 및 배포 (5~7일) - ⏳ 미완료
-### Day 1~2: Android 빌드 (2일) ⏳
-- [ ] flutter build apk / appbundle 실행
-- [ ] 에뮬레이터/실기기에서 Android 테스트 수행
-- [ ] 서명 설정 (signing config)
+## Phase 5: 플랫폼 확장 및 배포 (5~7일) - ⏳ 10% (2026-07-04)
+### Day 1~2: Android (2일) ⏳
+- [ ] flutter build apk/appbundle
+- [ ] Emulator + real device test
+- [ ] Signing + keystore setup
 
-### Day 2~4: iOS 빌드 (2일) ⏳
-- [ ] flutter build ios 실행
-- [ ] Xcode에서 시뮬레이터 테스트
-- [ ] Provisioning profiles 설정
+### Day 2~4: iOS + Desktop (2일) ⏳
+- [ ] flutter build ios (sim + archive)
+- [ ] Desktop (Windows) build + verify icons/splash
+- [ ] Certificates / provisioning
 
-### Day 4~5: Web 배포 (1~2일) ⏳
-- [ ] flutter build web 실행
-- [ ] PWA manifest 설정
-- [ ] GitHub Pages 또는 Netlify 테스트 배포
+### Day 4~5: Web + PWA (1~2일) ⏳
+- [ ] flutter build web --release
+- [ ] PWA manifest + offline test
+- [ ] Deploy test (e.g. Netlify)
 
-### Day 5~6: 릴리스 설정 (1일) ⏳
-- [ ] pubspec.yaml 버전 bump
-- [ ] 릴리스 빌드 아티팩트 생성
-- [ ] CHANGELOG 업데이트
+### Day 5~6: Release + Assets (1일) ⏳
+- [ ] Version + changelog
+- [ ] Artifacts for all platforms
+- [ ] Store listing text + screenshots (multi-device)
 
-### Day 6~7: 스토어 준비 (1일) ⏳
-- [ ] App store listing 텍스트 작성
-- [ ] 스크린샷 준비
-- [ ] 설명 및 키워드 작성
+### Granular next (Phase 4 remain + 5)
+- [ ] Hymn CSV 100+ via downloader (Hymnary PD filter)
+- [ ] creed/lords/responsive_reading full responsive + Semantics
+- [ ] Full Semantics audit + accessibility test
+- [ ] Large JSON perf (if needed)
+- [ ] Store graphics + keywords + privacy
 
 ## 추후 (Phase 6+, 2~4주 단위로)
 ### 오디오 (1주)
@@ -169,20 +171,47 @@ Phase 5:     [███░░░░░░░] 15% ⏳
 - [ ] Reading progress tracking
 - [ ] Stats screen (chapters read, time)
 
-## 진행 상황 추적 (시각적 명확화)
-- **전체 대비**: ~65% (Phase 0-3 ✅, Phase 4 시작)
-- **완료된 상태**: Phase 0-3 (북마크, hymns with fav+search, dual creeds/prayers, about, bottom nav 5 tabs, theme+dark+font+highContrast, loading/error basics, responsive start)
-- **추가 백로그**: 즐겨찾기 하이라이트
-- **남은 것**: Phase 4 (고도화: dark polish, full accessibility, full responsive, branding, more error/loading), Phase 5 (배포)
-- **당장 다음 할일 (상세, <1주 단위)**: 
-  1. 즐겨찾기 하이라이트 구현 (hymn/bookmark 강조)
-  2. Phase 4: dark color customization + full responsive (book/verse screens)
-  3. Accessibility expansion (more Semantics, test scales)
-  4. Loading/error across all screens
-  5. Branding: prepare icon.png + generate
-- **시각적 트래킹**:
-  로드맵: [█████████████░░░░░░░] ~65%
-  Phase별: 0-3 █████████████ 95% | 4 ░░░░░ 10% | 5 ░░░░░ 0%
-- 주간 리뷰 시 이 파일 + PPTX 업데이트
+## 해야할 작업 (To-Do, 2026-07-04 기준, 우선순위 순)
+**전체 대비 남은 ~15% (주로 Phase 5 + Phase 4 잔여)**
 
-**다음 실행 추천**: Phase 4 고도화 + favorites highlight. 모든 Phase 후 roadmap-pptx + commit.
+### 즉시 우선 (Top 3, 다음 1-2주)
+1. **Phase 5 Android 빌드/테스트**
+   - flutter build apk / appbundle
+   - 에뮬레이터 + 실기기 테스트
+   - signing config + keystore 생성
+   - Gradle / AndroidManifest 최종 확인
+
+2. **Phase 5 iOS + Web 빌드**
+   - flutter build ios (simulator + archive)
+   - Xcode에서 테스트, provisioning profiles
+   - flutter build web --release + PWA manifest
+   - 오프라인 테스트 + deploy (Netlify 등)
+
+3. **Hymns 대량 확장 + Phase 4 마무리**
+   - Hymnary.org에서 PD 필터 CSV export
+   - scripts/hymn_downloader.py로 100곡+ hymns.json 갱신
+   - creed/lords_prayer/responsive_reading 화면 full responsive + Semantics 추가
+   - 전체 화면 Semantics audit (screen reader)
+
+### Phase 5 상세 세분화 작업
+- Day 5~6: Release prep
+  - pubspec version bump + CHANGELOG
+  - 모든 플랫폼 릴리스 아티팩트 생성
+  - TestFlight / internal track 테스트
+- Day 6~7: Store assets
+  - App Store / Play Store / MS Store listing 텍스트
+  - 스크린샷 (폰 + 태블릿 + 데스크톱)
+  - 키워드, 프라이버시 정책, 그래픽스
+- 추가: large JSON lazy load (필요 시), 전체 테스트 커버리지 확대
+
+### 추후 (Phase 6+)
+- 오디오 (TTS for verses)
+- 다중 번역 지원
+- 클라우드 sync (bookmarks)
+- 읽기 통계 화면
+
+**시각적 트래킹**:
+로드맵: [████████████████░░░░] ~85%
+Phase별: 0-3 100% ✅ | 4 80% ✅ | 5 10% ⏳
+
+**다음 roadmap-pptx 실행 시 자동 반영 권장**

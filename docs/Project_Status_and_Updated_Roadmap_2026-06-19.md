@@ -1,21 +1,24 @@
 # Korean Bible App Project - 종합 현황 및 로드맵 (Updated 2026-06-27)
 
 **현재 진행 상황 요약 (2026-07-04 업데이트)**:
-- **전체 대비**: ~88% 완료 (Phase 0-4 대부분 완료, Phase 5 준비 단계)
-- **시각적 진행**: [█████████████████░░░] ~88%
-- **완료**: 
-  - Phase 0-3 완전 (성경 데이터, 읽기 UI, 북마크, 찬송가, 예배자료, About, BottomNav 5탭)
-  - Phase 4: 
-    - Branding (icon.png 생성 + flutter_launcher_icons / native_splash 실행 완료)
-    - Dark mode polish + highContrast 개선
-    - Responsive (대부분 화면에 LayoutBuilder/MediaQuery 적용)
-    - Accessibility (Semantics 추가, highContrast 효과 강화)
-    - Loading/Error UI 확장 (hymn, settings, worship, bookmark 등)
-    - Hymns 대폭 확장 (다운로더 스크립트 + 35곡 PD 데이터 + 메타데이터)
-    - Hymn list 스크롤 최적화 (debounce, O(1) fav lookup, tileColor, keys)
-- **현재 hymns**: 35곡 (Public Domain 중심, downloader로 쉽게 확장 가능)
-- **당장 다음 (상세)**: Phase 5 (Android/iOS/Web 빌드, 스토어 준비), 추가 PD hymns (CSV import), 남은 화면 polish
-- **남은 주요**: Phase 5 (배포 준비)
+- **전체 대비**: ~85% 완료 (Phase 0-3 완전, Phase 4 대부분, Phase 5 초기)
+- **시각적 진행**: [████████████████░░░░] ~85%
+- **완료**:
+  - Phase 0-2: 데이터 모델/Hive/로더 + 기본 읽기 UI (책/장/본문, 검색, 네비)
+  - Phase 3: 북마크 (전체 CRUD + viewer), 찬송가 (35곡 PD + 다운로더 + 검색/fav/상세), 예배자료 (신경/기도/교독문 dual), About, 5탭 BottomNav, Theme (dark + scale + highContrast)
+  - Phase 4:
+    - Branding: icon.png + flutter_launcher_icons + native_splash:create 실행
+    - Responsive: book_list, chapter_list, hymn_list, settings, bookmark_list, worship, hymn_detail, about 등에 LayoutBuilder/MediaQuery 적용
+    - Accessibility: Semantics 라벨 (book, verse, settings, hymn 등), highContrast 효과 강화
+    - Loading/Error: book_list + hymn/settings/worship/bookmark 등 확장
+    - Dark polish + hymn list 스크롤 최적화 (debounce 250ms, O(1) fav Set, tileColor, ValueKey)
+    - Hymns: scripts/hymn_downloader.py + 35곡 + 메타데이터 (title_en/author/year/source) + UI 개선
+- **현재 hymns**: 35곡 (Public Domain, 2026-07-04)
+- **당장 다음 (상세)**:
+  1. Phase 5: Android 빌드 + 테스트 + signing
+  2. Phase 5: iOS + Web (PWA) 빌드 + 테스트
+  3. Hymns 추가 확장 (Hymnary CSV로 100+곡), 남은 화면 full responsive/Semantics, store assets
+- **남은 주요**: Phase 5 (크로스 플랫폼 빌드/릴리스/스토어), hymns 대량, 최종 polish + 테스트
 
 ## 프로젝트 개요
 **완전 무료 오프라인 한국어 성경 앱**  
@@ -29,60 +32,75 @@ Public Domain 데이터(개역개정 등)를 사용하여 인터넷 없이도 �
 
 ### 진행률 시각화
 ```
-전체 로드맵 (Phase 0-5): [█████████████████░░░] ~88% 완료
+전체 로드맵 (Phase 0-5): [████████████████░░░░] ~85% 완료
 Phase 0: ██████████ 100% ✅ (기반)
 Phase 1: ██████████ 100% ✅ (데이터 계층)
 Phase 2: ██████████ 100% ✅ (기본 읽기 UI)
-Phase 3: ██████████ 100% ✅ (북마크, hymns, 예배자료, About, BottomNav)
-Phase 4: ████████████ 85% ✅ (branding, responsive, accessibility, loading/error, dark polish, hymns 확장+스크롤 최적화)
-Phase 5: ████░░░░░░ 15% ⏳ (빌드/배포 준비)
+Phase 3: ██████████ 100% ✅ (북마크, hymns 35곡, 예배자료, About, BottomNav)
+Phase 4: ███████████ 80% ✅ (branding, responsive, accessibility, loading/error, dark, hymns+scroll)
+Phase 5: ███░░░░░░░ 10% ⏳ (빌드/배포 준비)
 ```
 
-**당장 다음 할 일 (상세, <1주 단위)**:
-1. Phase 5: Android 빌드 + 테스트
-2. Phase 5: iOS/Web 빌드 + PWA
-3. 추가 PD hymns 대량 import (Hymnary CSV)
-4. 스토어 에셋 (스크린샷, 설명) 준비
+**해야할 작업 (상세, 우선순위 Top, <1-2주 단위)**:
+1. **Phase 5 Android** (Day1-2): build apk/appbundle, emulator+실기기 테스트, signing config
+2. **Phase 5 iOS + Web** (Day2-4): ios archive, Web PWA + offline test + deploy
+3. **Hymns 확장** (100+곡): Hymnary PD CSV export → hymn_downloader.py 실행 → hymns.json 갱신
+4. **Phase 4 마무리**: creed/lords/responsive_reading responsive + Semantics, 전체 화면 audit, store screenshots 준비
 
-## 마일스톤 및 일정 (Gantt 스타일)
+**상세 해야할 작업 (Granular)**:
+- Android signing + keystore
+- iOS provisioning profiles
+- PWA manifest + service worker
+- Hymn CSV 100곡+ (PD filter)
+- creed/lords_prayer/responsive_reading full responsive + Semantics
+- Full Semantics + accessibility test
+- Store listing text + multi-device screenshots
+- Version bump + CHANGELOG + artifacts
+- Large JSON perf optimization (if needed)
+
+## 마일스톤 및 상세 Gantt (일정)
 **주요 마일스톤**:
 - M1: Phase 0-2 완료 (MVP 읽기 UI) - 2026-06-27 ✅
-- M2: Phase 3 완료 (사용자 기능 + 추가 콘텐츠) - 2026-07-10
-- M3: Phase 4 완료 (UI/UX 고도화 + 접근성) - 2026-07-20
-- M4: Phase 5 완료 (배포 준비) - 2026-07-25
+- M2: Phase 3 완료 (북마크 + hymns 35곡 + 예배자료 + BottomNav) - 2026-07-04 ✅ (앞당김)
+- M3: Phase 4 완료 (Branding + Responsive + Accessibility + Loading/Error + Dark + Hymns 최적화) - 2026-07-11
+- M4: Phase 5 완료 (Android/iOS/Web 빌드 + Store) - 2026-07-25
 - M5: 스토어 릴리스 - 2026-08-05
 
-**간트 차트 개요 (주 단위)**:
-- 2026-06: Phase 0-2 완료
-- 2026-07 초: Phase 3 (북마크, hymns, creeds, about)
-- 2026-07 중: Phase 4 (responsive, branding, polish)
-- 2026-07 말: Phase 5 빌드 & 테스트
-- 2026-08: 릴리스 & 스토어
+**상세 Gantt (주 단위 + 해야할 작업 세분화)**:
+```
+Week | Phase | 해야할 작업 (Granular)                                      | Status
+-----|-------|-------------------------------------------------------------|--------
+1-4  | 0-3   | (완료) 데이터/읽기 UI, 북마크, hymns 35곡, 예배자료, Theme | ✅
+5    | 4     | (완료) downloader, 35 hymns, Branding, Scroll fix, Resp     | ✅
+5-6  | 4     | hymns CSV 100+ , creed/lords/responsive full resp+Semantics | ⏳
+6-7  | 5     | Android build + test + signing                              | ⏳
+7    | 5     | iOS build/archive + Web PWA + deploy test                   | ⏳
+7-8  | 5     | Store assets (screenshots, listing), version bump, artifacts| ⏳
+8+   | 5     | Internal release, feedback, 스토어 제출                     | 
+```
+
+(상세 테이블은 백로그 MD "해야할 작업" 섹션 참조. PPTX Gantt 슬라이드에 시각화)
+
+**세분화된 다음 작업 (Phase 4 잔여 + Phase 5)**:
+- Phase 4 잔여: creed/lords/responsive_reading full responsive + Semantics, hymn CSV import (100+), remaining polish
+- Phase 5: Android (build, emulator, signing) → iOS (archive) → Web (PWA deploy) → Store prep (listing, screenshots, keywords)
+
+(간트 바는 PPTX의 "마일스톤 & 간트 차트" 슬라이드에 시각화. 백로그 MD에 Day-by-Day 상세 tasks)
 
 (상세 Gantt는 PPTX 스킬에서 시각화)
 
-### 완료된 작업
-- Flutter 프로젝트 기본 구조 생성 및 다중 플랫폼 지원 준비 완료
-- 의존성 설정: `hive`, `hive_flutter`, `path_provider`, `provider`, `hive_generator`, `build_runner`
-- `assets/data/`에 성경 데이터 파일 배치 (`kor_bible_full.json`, `kor-korean.osis.xml`, 샘플)
-- 기본 앱 스켈레톤 구현 (`lib/main.dart`)
-  - Hive 초기화 + 어댑터 등록 (BibleVerse/Chapter/Book)
-  - 한국어 제목 및 기본 테마 (indigo + 큰 글씨)
-  - 하단 네비게이션 (성경 / 북마크 / 검색 placeholder)
-- `flutter analyze` 클린 (lint 경고 해결 완료)
-- Windows 데스크톱 빌드 성공 (`korean_bible_app.exe` 생성)
-- 기존 테스트 업데이트 및 통과
-- 불필요한 중복 `main.dart` 정리
-- 프로젝트 문서 구조 생성 (docs/ 폴더)
-- Phase 1 상세 구현: 데이터 모델 + Hive 어댑터 + JSON 로더 (BibleDataService) + 초기화/시드 완료
-- Phase 2 상세 구현: 책 목록 (bilingual + 검색 + 필터 + 본문 검색), 장 그리드, 본문 뷰어 (RichText + prev/next + 홈 버튼), Provider, 디자인 개선 (카드/컴팩트/타이포)
-- 상세 일/주 단위 작업 분해 백로그에 반영 (Phase 1~5)
+### 완료된 작업 (2026-07-04 sync)
+- Phase 0-2: 전체 데이터 (모델, Hive 어댑터, JSON 로더, BibleDataService), 기본 읽기 (book_list bilingual/search/filter, chapter grid, verse viewer RichText + prev/next/home)
+- Phase 3: 북마크 (full CRUD + Hive + viewer toggle + list), hymns (35 PD + downloader.py + search/fav/detail + metadata), worship (creed/prayer/responsive dual), About, 5탭 BottomNav, ThemeProvider (dark/scale/highContrast)
+- Phase 4: Branding (icon.png + generators), Responsive (8+ screens with LayoutBuilder/MediaQuery), Accessibility (Semantics + highContrast), Loading/Error extended, Dark polish, Hymn list scroll (debounce, O(1) fav, keys, tileColor), Tests (5 pass)
+- Docs: MD sync, PPTX with Gantt/milestones/granular
 
 ### 현재 코드 상태
-- `lib/main.dart`: Hive init + 어댑터 + JSON 로더 호출 + 기본 HomeScreen (BookList로 진입, 바로 성경 홈)
-- 데이터 구조: JSON (`version`, `books[]` → `chapters[]` → `verses[]`) + Hive 모델
-- 검색: 한글/영문 책명 + 본문 검색 지원
-- 본문 뷰어: 버전 표시, 홈으로 직행, 한글+영어 이름, prev/next 즉시 이동
+- hymns.json: 35곡, last_updated 2026-07-04
+- lib/screens: responsive + some Semantics on key screens
+- provider: isHymnFavorite O(1), loadHymns with source_note
+- scripts/hymn_downloader.py: CSV support + built-in PD
+- Branding applied, Windows build OK, analyze clean
 
 ### 문서 상태
 - 본 로드맵: 2026-06-27 업데이트 (시각적 진행 + 다음 할일 명확화)
