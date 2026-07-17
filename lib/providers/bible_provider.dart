@@ -111,7 +111,9 @@ class BibleProvider with ChangeNotifier {
 
   List<int> _favoriteHymnIds = [];
   Set<int> _favoriteHymnIdSet = {};
-  List<Hymn> get favoriteHymns => _hymns.where((h) => _favoriteHymnIdSet.contains(h.id)).toList();
+  /// Favorite hymns in catalog number order (same as main hymn list).
+  List<Hymn> get favoriteHymns =>
+      _hymns.where((h) => _favoriteHymnIdSet.contains(h.id)).toList();
 
   bool isHymnFavorite(int id) => _favoriteHymnIdSet.contains(id);
 
@@ -159,6 +161,17 @@ class BibleProvider with ChangeNotifier {
       final list = (jsonMap['hymns'] as List<dynamic>)
           .map((e) => Hymn.fromJson(e as Map<String, dynamic>))
           .toList();
+      // Keep catalog order: numeric hymn number ascending (id as fallback)
+      list.sort((a, b) {
+        final an = int.tryParse(a.number);
+        final bn = int.tryParse(b.number);
+        if (an != null && bn != null) return an.compareTo(bn);
+        if (an != null) return -1;
+        if (bn != null) return 1;
+        final byNum = a.number.compareTo(b.number);
+        if (byNum != 0) return byNum;
+        return a.id.compareTo(b.id);
+      });
       _hymns = list;
     } catch (e) {
       _hymns = [];

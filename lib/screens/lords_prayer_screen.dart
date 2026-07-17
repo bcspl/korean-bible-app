@@ -40,35 +40,55 @@ class _LordsPrayerScreenState extends State<LordsPrayerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final pad = width > 900 ? 32.0 : (width > 600 ? 24.0 : 16.0);
+    final versionLabel = _version == 0 ? '개역개정' : '개역한글';
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('주기도문'),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(40),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ChoiceChip(
-                label: const Text('개역개정'),
-                selected: _version == 0,
-                onSelected: (_) => setState(() => _version = 0),
-              ),
-              const SizedBox(width: 8),
-              ChoiceChip(
-                label: const Text('개역한글'),
-                selected: _version == 1,
-                onSelected: (_) => setState(() => _version = 1),
-              ),
-            ],
+          child: Semantics(
+            label: '주기도문 버전 선택',
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Semantics(
+                  button: true,
+                  selected: _version == 0,
+                  label: '개역개정 버전',
+                  child: ChoiceChip(
+                    label: const Text('개역개정'),
+                    selected: _version == 0,
+                    onSelected: (_) => setState(() => _version = 0),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Semantics(
+                  button: true,
+                  selected: _version == 1,
+                  label: '개역한글 버전',
+                  child: ChoiceChip(
+                    label: const Text('개역한글'),
+                    selected: _version == 1,
+                    onSelected: (_) => setState(() => _version = 1),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(pad),
         child: SingleChildScrollView(
-          child: SelectableText(
-            _versions[_version]!.trim(),
-            style: const TextStyle(fontSize: 18, height: 1.8),
+          child: Semantics(
+            label: '주기도문 $versionLabel 본문',
+            child: SelectableText(
+              _versions[_version]!.trim(),
+              style: const TextStyle(fontSize: 18, height: 1.8),
+            ),
           ),
         ),
       ),

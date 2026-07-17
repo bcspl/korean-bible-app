@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../models/hymn.dart';
 import '../providers/bible_provider.dart';
 import 'hymn_detail_screen.dart';
 
@@ -26,19 +27,17 @@ class _HymnListScreenState extends State<HymnListScreen> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<BibleProvider>(context);
-    var hymns = provider.hymns.where((h) {
+    bool matches(Hymn h) {
       final q = _searchQuery.toLowerCase();
-      return h.title.toLowerCase().contains(q) ||
+      if (q.isEmpty) return true;
+      return h.number.toLowerCase().contains(q) ||
+          h.title.toLowerCase().contains(q) ||
           h.lyrics.toLowerCase().contains(q);
-    }).toList();
-
-    if (_showFavoritesOnly) {
-      hymns = provider.favoriteHymns.where((h) {
-        final q = _searchQuery.toLowerCase();
-        return h.title.toLowerCase().contains(q) ||
-            h.lyrics.toLowerCase().contains(q);
-      }).toList();
     }
+
+    var hymns = _showFavoritesOnly
+        ? provider.favoriteHymns.where(matches).toList()
+        : provider.hymns.where(matches).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -99,38 +98,46 @@ class _HymnListScreenState extends State<HymnListScreen> {
                     itemBuilder: (context, i) {
                       final h = hymns[i];
                       final isFav = provider.isHymnFavorite(h.id);
-                      return ListTile(
-                        key: ValueKey(h.id),
-                        tileColor: isFav ? Colors.indigo.withAlpha(25) : null,
-                        leading: const Icon(Icons.music_note, color: Colors.indigo),
-                        title: Text(
-                          '${h.number}. ${h.title}',
-                          style: isFav ? const TextStyle(fontWeight: FontWeight.bold) : null,
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(h.category),
-                            if (h.titleEn != null && h.titleEn!.isNotEmpty)
-                              Text(h.titleEn!, style: const TextStyle(fontSize: 12, color: Colors.grey)),
-                            if (h.author != null && h.author!.isNotEmpty)
-                              Text(h.author!, style: const TextStyle(fontSize: 11, color: Colors.grey)),
-                          ],
-                        ),
-                        trailing: IconButton(
-                          icon: Icon(isFav ? Icons.favorite : Icons.favorite_border, color: isFav ? Colors.red : null),
-                          onPressed: () {
-                            provider.toggleHymnFavorite(h.id);
+                      return Semantics(
+                        button: true,
+                        label: '${h.number}. ${h.title}${isFav ? ", 즐겨찾기" : ""}',
+                        child: ListTile(
+                          key: ValueKey(h.id),
+                          tileColor: isFav ? Colors.indigo.withAlpha(25) : null,
+                          leading: const Icon(Icons.music_note, color: Colors.indigo),
+                          title: Text(
+                            '${h.number}. ${h.title}',
+                            style: isFav ? const TextStyle(fontWeight: FontWeight.bold) : null,
+                          ),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(h.category),
+                              if (h.titleEn != null && h.titleEn!.isNotEmpty)
+                                Text(h.titleEn!, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                              if (h.author != null && h.author!.isNotEmpty)
+                                Text(h.author!, style: const TextStyle(fontSize: 11, color: Colors.grey)),
+                            ],
+                          ),
+                          trailing: Semantics(
+                            button: true,
+                            label: isFav ? '즐겨찾기 해제' : '즐겨찾기 추가',
+                            child: IconButton(
+                              icon: Icon(isFav ? Icons.favorite : Icons.favorite_border, color: isFav ? Colors.red : null),
+                              onPressed: () {
+                                provider.toggleHymnFavorite(h.id);
+                              },
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => HymnDetailScreen(hymn: h),
+                              ),
+                            );
                           },
                         ),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => HymnDetailScreen(hymn: h),
-                            ),
-                          );
-                        },
                       );
                     },
                   ),

@@ -2,27 +2,33 @@
 
 > **참고**: 전체 로드맵은 `Project_Status_and_Updated_Roadmap_2026-06-19.md` 참조
 
-## 현재 진행 상황 요약 (2026-07-04 업데이트)
-**전체 로드맵 대비 진행률**: ~85% 완료
-- ✅ 완료: Phase 0-3 전부 + Phase 4 대부분 (hymns 35곡 + branding + responsive + accessibility + loading/error + dark + scroll fix)
-  - hymns: downloader.py + 35 PD + metadata + list/detail/fav/search/scroll optimize (debounce, O(1))
-  - Branding: icon + generators run
-  - Responsive: 8+ screens (book, chapter, hymn_list, settings, bookmark, worship, hymn_detail, about)
-  - Accessibility: Semantics + highContrast
-  - Loading/Error extended, Dark polish, Tests 5개 pass
-- ⏳ 남은: Phase 5 (builds), hymns 100+ via CSV, full Semantics/responsive polish, store
-- **당장 다음 할 일 (우선순위 Top 3)**:
-  1. Phase 5: Android 빌드 + test + signing
-  2. Phase 5: iOS + Web PWA 빌드 + test
-  3. Hymns CSV 확장 (100곡+) + 남은 Phase 4 polish + store assets
+## 현재 진행 상황 요약 (2026-07-17 EOD — session ceased)
+**전체 로드맵 대비 진행률**: **~88%** 완료
+- ✅ 완료: Phase 0–4 (hymn expand frozen) + Phase 5 partial
+  - hymns: **104 PD**, renumber, fav on 북마크, educational SVG (**PARKED** further work)
+  - **APK release** 54.9 MB ✅ · **Web release** `build/web` ✅
+  - Tests 5/5 · analyze 0 errors · label `한국어 성경`
+- ⏸ **PARKED:** more hymns, real Korean score images
+- ⏳ **NEXT session:** production signing, AAB, store decisions, device smoke-test
+- **당장 다음 할 일 (Top 3)**:
+  1. User decisions (package ID, ship target, keystore, privacy URL, email)
+  2. Android production signing + `appbundle`
+  3. Store listing + APK device smoke-test
 
 **시각적 진행 표시**:
 ```
-로드맵 전체: [████████████████░░░░] ~85%
+로드맵 전체: [█████████████████░░░] ~88%
 Phase 0-3:   [█████████████] 100% ✅
-Phase 4:     [██████████] 80% ✅
-Phase 5:     [██░░░░░░░░] 10% ⏳
+Phase 4:     [████████████] ~95% ✅ (hymns frozen)
+Phase 5:     [████░░░░░░] ~40% ⏳ (APK+Web done)
 ```
+
+**마일스톤 (2026-07-17 EOD)**:
+- M1 Phase 0-2 MVP ✅ 2026-06-27
+- M2 Phase 3 features ✅ 2026-07-04
+- M3 Phase 4 polish ✅ ~95%
+- M4 Phase 5 builds ⏳ ~40% (APK+Web ✅; AAB/signing/iOS open) target 2026-07-25
+- M5 Store package ⏳ target 2026-08-05 (blocked on user decisions)
 
 ## Phase 1: 데이터 계층 (최우선, 4~5일) - ✅ 완료 (2026-06-27)
 ### Day 1: 모델 정의 (0.5~1일) ✅
@@ -84,12 +90,13 @@ Phase 5:     [██░░░░░░░░] 10% ⏳
 - [x] SettingsScreen: 글꼴 크기 슬라이더 (0.8~2.0, 시스템 연동), 다크모드, 고대비 스위치
 - [ ] 검색 결과 UI 하이라이트 개선 (snippets 스타일링) - remaining
 
-### 찬송가 ✅
-- [x] Hymn 모델 + hymns.json (PD samples)
-- [x] 목록 (검색 + 즐겨찾기)
-- [x] 상세 (가사 + placeholder)
-- [ ] 즐겨찾기 하이라이트 기능 (목록 강조 + 상세 하이라이트)
-- [ ] assets/images/hymns/ 실제 이미지
+### 찬송가 ✅ (current scope frozen — expansion PARKED)
+- [x] Hymn 모델 + hymns.json (**104 PD**, renumbered 1..N)
+- [x] 목록 (검색 + 즐겨찾기) / 상세 (가사 + SVG placeholder 악보)
+- [x] 즐겨찾기 하이라이트 + **북마크 탭에 즐겨찾기 찬송 표시**
+- [x] `scripts/generate_hymn_scores.py` (교육용 간소화 SVG — 공식 악보 아님)
+- [ ] ~~추가 찬송 / CSV 확장~~ → **PARKED (later)**
+- [ ] ~~실제 한국 찬송가 전체 악보 이미지~~ → **PARKED (later; license / PD scan / engrave)**
 
 ### 사도신경 / 주기도문 / 교독문 / About ✅
 - [x] Dual version screens (개역한글/개역개정)
@@ -171,47 +178,43 @@ Phase 5:     [██░░░░░░░░] 10% ⏳
 - [ ] Reading progress tracking
 - [ ] Stats screen (chapters read, time)
 
-## 해야할 작업 (To-Do, 2026-07-04 기준, 우선순위 순)
-**전체 대비 남은 ~15% (주로 Phase 5 + Phase 4 잔여)**
+## 해야할 작업 (To-Do, 2026-07-17 EOD — session ceased)
+**Status:** 오늘 작업 종료. 다음 세션 = Phase 5 잔여 + 스토어 결정 대기.
 
-### 즉시 우선 (Top 3, 다음 1-2주)
-1. **Phase 5 Android 빌드/테스트**
-   - flutter build apk / appbundle
-   - 에뮬레이터 + 실기기 테스트
-   - signing config + keystore 생성
-   - Gradle / AndroidManifest 최종 확인
+### 즉시 우선 (Top 3) — next session
+1. **User decisions** (see `docs/DEPLOY_CHECKLIST.md`): package ID, ship target, keystore, privacy URL, support email  
+2. **Android production**: keystore + `key.properties` + `flutter build appbundle --release`  
+3. **Ship package**: device APK smoke-test + store listing/screenshots/privacy  
 
-2. **Phase 5 iOS + Web 빌드**
-   - flutter build ios (simulator + archive)
-   - Xcode에서 테스트, provisioning profiles
-   - flutter build web --release + PWA manifest
-   - 오프라인 테스트 + deploy (Netlify 등)
+### Phase 4 residual
+- [ ] Optional: clear remaining `prefer_const` analyze infos  
+- [x] Semantics / responsive on worship materials  
 
-3. **Hymns 대량 확장 + Phase 4 마무리**
-   - Hymnary.org에서 PD 필터 CSV export
-   - scripts/hymn_downloader.py로 100곡+ hymns.json 갱신
-   - creed/lords_prayer/responsive_reading 화면 full responsive + Semantics 추가
-   - 전체 화면 Semantics audit (screen reader)
+### ⏸ PARKED — Hymn expansion (later)
+Do **not** schedule until user reopens:
+- [ ] More hymns (CSV / Hymnary / expand scripts)
+- [ ] Real full-page Korean score **images** (PNG)
+- [ ] Score source: license 찬송가공회 | PD Hymnary scans | MuseScore/LilyPond
+- [ ] Zoomable multi-page score UI  
 
-### Phase 5 상세 세분화 작업
-- Day 5~6: Release prep
-  - pubspec version bump + CHANGELOG
-  - 모든 플랫폼 릴리스 아티팩트 생성
-  - TestFlight / internal track 테스트
-- Day 6~7: Store assets
-  - App Store / Play Store / MS Store listing 텍스트
-  - 스크린샷 (폰 + 태블릿 + 데스크톱)
-  - 키워드, 프라이버시 정책, 그래픽스
-- 추가: large JSON lazy load (필요 시), 전체 테스트 커버리지 확대
+**Frozen:** 104 PD hymns, #1–104, SVG scores, fav on 북마크  
 
-### 추후 (Phase 6+)
-- 오디오 (TTS for verses)
-- 다중 번역 지원
-- 클라우드 sync (bookmarks)
-- 읽기 통계 화면
+### Phase 5 (deploy)
+- [x] `flutter build apk --release` → `build/app/outputs/flutter-apk/app-release.apk` (54.9 MB, **debug-signed**)  
+- [x] `flutter build web --release` → `build/web/`  
+- [x] CHANGELOG + DEPLOY_CHECKLIST + key.properties.example  
+- [ ] Device install / smoke-test APK  
+- [ ] Change applicationId from `com.example.korean_bible_app`  
+- [ ] Release keystore + signingConfig (not debug)  
+- [ ] `flutter build appbundle --release`  
+- [ ] Web host/deploy (optional)  
+- [ ] iOS build (Mac only)  
+- [ ] Store listing + multi-device screenshots + keywords/privacy  
 
-**시각적 트래킹**:
-로드맵: [████████████████░░░░] ~85%
-Phase별: 0-3 100% ✅ | 4 80% ✅ | 5 10% ⏳
+### Phase 6+ (future)
+- TTS, multi-translation, cloud sync, reading stats  
+- **Resume hymn agenda** when unparked  
 
-**다음 roadmap-pptx 실행 시 자동 반영 권장**
+**시각적 트래킹**: [█████████████████░░░] ~88% | P0-3 100% | P4 ~95% | P5 ~40% | hymns ⏸  
+**마일스톤**: M1✅ M2✅ M3✅~95% | M4⏳~40% | M5⏳ store  
+**Last updated**: 2026-07-17 EOD — work **ceased**

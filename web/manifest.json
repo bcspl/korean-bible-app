@@ -1,11 +1,11 @@
 {
-    "name": "korean_bible_app",
-    "short_name": "korean_bible_app",
+    "name": "한국어 성경",
+    "short_name": "성경",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#3F51B5",
+    "theme_color": "#3F51B5",
+    "description": "완전 무료 오프라인 한국어 성경 · 찬송 · 예배자료 (Public Domain)",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

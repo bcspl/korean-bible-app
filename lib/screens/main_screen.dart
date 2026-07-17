@@ -27,33 +27,41 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _screens[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (i) => setState(() => _currentIndex = i),
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.indigo,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.menu_book),
-            label: '성경',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_balance),
-            label: '예배자료',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.music_note),
-            label: '찬송가',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark),
-            label: '북마크',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: '설정',
-          ),
-        ],
+      bottomNavigationBar: Semantics(
+        label: '메인 하단 내비게이션',
+        child: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          onTap: (i) => setState(() => _currentIndex = i),
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: Colors.indigo,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.menu_book),
+              label: '성경',
+              tooltip: '성경 탭',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.account_balance),
+              label: '예배자료',
+              tooltip: '예배자료 탭',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.music_note),
+              label: '찬송가',
+              tooltip: '찬송가 탭',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.bookmark),
+              label: '북마크',
+              tooltip: '북마크 탭',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: '설정',
+              tooltip: '설정 탭',
+            ),
+          ],
+        ),
       ),
     );
   }

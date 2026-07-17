@@ -39,26 +39,30 @@ class ChapterListScreen extends StatelessWidget {
             ),
             itemCount: book.chapters.length,
             itemBuilder: (context, index) {
-              return InkWell(
-                onTap: () {
-                  provider.setCurrentChapter(index);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => VerseViewerScreen(bookIndex: bookIndex, chapterIndex: index),
+              return Semantics(
+                button: true,
+                label: '${index + 1}장 열기',
+                child: InkWell(
+                  onTap: () {
+                    provider.setCurrentChapter(index);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => VerseViewerScreen(bookIndex: bookIndex, chapterIndex: index),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: Colors.grey.shade300, width: 1),
                     ),
-                  );
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.grey.shade300, width: 1),
-                  ),
-                  child: Center(
-                    child: Text(
-                      '${index + 1}',
-                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                    child: Center(
+                      child: Text(
+                        '${index + 1}',
+                        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                      ),
                     ),
                   ),
                 ),

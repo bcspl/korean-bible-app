@@ -11,7 +11,9 @@ class AboutScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('이 성경앱에 대해서')),
       body: Padding(
         padding: EdgeInsets.all(pad),
-        child: SingleChildScrollView(
+        child: Semantics(
+          label: '이 성경앱에 대해서 안내',
+          child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -43,6 +45,7 @@ class AboutScreen extends StatelessWidget {
               Text('피드백 및 기여 환영'),
             ],
           ),
+        ),
         ),
       ),
     );

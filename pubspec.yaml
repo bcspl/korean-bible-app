@@ -17,6 +17,7 @@ dependencies:
   path_provider: ^2.1.4           # 기기 파일/디렉토리 경로 접근 (Hive box 위치)
   provider: ^6.1.2                # 상태 관리 (선택, 간단한 앱에 추천)
   shared_preferences: ^2.5.5
+  flutter_svg: ^2.0.10            # 찬송가 악보 SVG 표시
   # intl: ^0.19.0                 # 날짜/로케일 (기도장 날짜용, 필요시)
   
   # 추가 추천 (나중에)
@@ -36,7 +37,7 @@ flutter:
   # === Assets 등록 (가장 중요!) ===
   assets:
     - assets/data/                  # assets/data/ 폴더 전체 등록 (kor_bible_full.json)
-    # - assets/images/              # 이미지 폴더 필요시 추가
+    - assets/images/hymns/          # 찬송가 악보 SVG (scripts/generate_hymn_scores.py)
     # - assets/fonts/               # 커스텀 폰트 필요시
 
 # === Branding (flutter_launcher_icons) ===
