@@ -1,5 +1,6 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../models/bible_version.dart';
 import '../providers/bible_provider.dart';
 import 'verse_viewer_screen.dart';
 
@@ -18,7 +19,10 @@ class ChapterListScreen extends StatelessWidget {
         title: Text(provider.getBookDisplayNameForIndex(bookIndex)),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(20),
-          child: Text(provider.version, style: const TextStyle(fontSize: 12, color: Colors.white70)),
+          child: Text(
+            provider.activeVersions.map((v) => v.code).join(' · '),
+            style: const TextStyle(fontSize: 12, color: Colors.white70),
+          ),
         ),
       ),
       body: LayoutBuilder(

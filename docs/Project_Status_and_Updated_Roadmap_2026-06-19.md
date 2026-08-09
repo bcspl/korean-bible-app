@@ -1,30 +1,31 @@
 # Korean Bible App Project - 종합 현황 및 로드맵
 
-**Verified status: 2026-07-17 EOD** (code + APK/Web builds + docs)  
-**Session closed** — next session starts at Phase 5 remaining / store decisions  
+**Verified status: 2026-08-10** (code + multi-version PD texts + tests + docs)  
+**Previous checkpoint:** 2026-07-17 EOD  
 
 ## Executive summary
+
 | Item | Value |
 |------|--------|
-| Overall progress | **~88%** |
+| Overall progress | **~92%** |
 | Phase 0–3 | **100% ✅** |
-| Phase 4 | **~95% ✅** (hymn expand/scores PARKED) |
-| Phase 5 | **~40% ⏳** (APK + Web built; signing/store/iOS open) |
-| Hymns (PD) | **104** sequential; educational SVG scores |
-| Screens | **13** (Semantics 13/13, Responsive 12/13) |
-| Branding | icon + launcher + splash; label **한국어 성경** |
+| Phase 4 | **~96% ✅** (PD multi-version + worship/hymns) |
+| Phase 5 | **~40% ⏳** (APK + Web; signing/store open) |
+| Bible versions | **KRV · KJV · ASV** (parallel, max 3) |
+| Hymns (PD) | **102** + history/license + KO/EN |
+| Responsive readings | **51** (시편·성탄·부활·이사야·누가) |
+| Text QA | `verify_bible_texts.py` **PASS** |
 | Tests | **5/5 passed** |
-| Analyze | **0 errors** (19 prefer_const infos) |
-| APK | ✅ `app-release.apk` 54.9 MB (debug-signed) |
-| Web | ✅ `build/web/` |
+| Analyze | **0 errors** |
+| APK / Web | Prior builds exist; rebuild after content change recommended |
 
 ```
-전체: [█████████████████░░░] ~88%
+전체: [██████████████████░░] ~92%
 P0  ██████████ 100% ✅
 P1  ██████████ 100% ✅
 P2  ██████████ 100% ✅
 P3  ██████████ 100% ✅
-P4  █████████░  95% ✅
+P4  █████████░  96% ✅
 P5  ████░░░░░░  40% ⏳
 ```
 
@@ -33,40 +34,40 @@ P5  ████░░░░░░  40% ⏳
 ## Verified completed work
 
 ### Phase 0–3 ✅
-- Bible data/Hive, book/chapter/verse UI, search, OT/NT
-- Bookmarks CRUD; 5-tab nav; theme (dark/scale/highContrast)
-- Worship: creed, Lord’s Prayer, responsive reading
-- Hymns: 104 PD, search/fav/detail, fav on 북마크, renumber 1–104
+- Bible data/Hive, book/chapter/verse UI, search, OT/NT  
+- Bookmarks; 5-tab nav; theme  
+- Worship + hymns foundation  
 
-### Phase 4 ✅ (~95%)
-- Branding, responsive, Semantics, scroll/perf, loading/error
-- Hymn expansion + real full Korean scores: **PARKED** (user 2026-07-17)
+### Phase 4 ✅ (~96%)
+- Branding, responsive, Semantics  
+- **2026-08-10:** Multi-version PD Bibles, verified KRV complete text, PD hymns rebuild, scripture-based 교독문, prayer-only Lord’s Prayer  
 
-### Phase 5 partial ✅ (today)
-- Release APK build succeeded
-- Web release build succeeded
-- Deploy checklist, CHANGELOG, key.properties.example
-- Gitignore for signing secrets
+### Phase 5 partial
+- Release APK / Web (2026-07-17)  
+- Deploy checklist, CHANGELOG, key.properties.example  
+
+### Content integrity (2026-08-10) ✅
+- KRV: holybible PD complete (fixed incomplete OSIS)  
+- KJV/ASV: open-bibles reparse match  
+- Golden verses pass  
 
 ---
 
-## Immediate Top 3 (next session)
+## Immediate Top 3 (next)
 
-1. **User decisions** — package ID, display name confirm, ship target (Play / APK / Web / iOS later), keystore, privacy URL, support email  
-2. **Android production signing** — keystore + AAB (Play)  
-3. **Store package + APK smoke-test** on real device  
+1. **User decisions** — package ID, ship target, keystore, privacy URL, support email  
+2. **Android production signing** — keystore + AAB  
+3. **UX polish** — remember version selection, verse copy/share, optional onboarding  
 
-See `docs/DEPLOY_CHECKLIST.md`.
+See `docs/DEPLOY_CHECKLIST.md`, `docs/PROJECT_REPORT_2026-08-10.md` §6–7.
 
-### ⏸ PARKED — Hymn expansion (later)
-- More hymns / CSV  
-- Real full-page Korean score images (license | PD scans | self-engrave)  
-- Zoomable multi-page score UI  
+### ⏸ PARKED
+- Official Korean full-page hymn scores / large non-PD catalog  
 
 ### Phase 5 remaining
 - [x] APK release (debug-signed)  
 - [x] Web release  
-- [ ] Device smoke-test  
+- [ ] Device smoke-test (after rebuild with new assets)  
 - [ ] applicationId ≠ `com.example.*`  
 - [ ] Release keystore + appbundle  
 - [ ] Web host (optional)  
@@ -74,37 +75,29 @@ See `docs/DEPLOY_CHECKLIST.md`.
 - [ ] Store listing / screenshots / privacy  
 
 ### Phase 6+ (future)
-- TTS, multi-translation, cloud sync, reading stats  
-- Resume hymn agenda when unparked  
+- Reading plans, last-position restore, highlights  
+- TTS (optional)  
+- Resume hymn score agenda when unparked  
 
 ---
 
-## Milestones
+## 현재 적용 vs 향후 계획 (사용성·가치)
 
-| ID | Milestone | Target | Status |
-|----|-----------|--------|--------|
-| **M1** | Phase 0–2 MVP | 2026-06-27 | ✅ Done |
-| **M2** | Phase 3 features | 2026-07-04 | ✅ Done |
-| **M3** | Phase 4 polish | 2026-07-20 | ✅ ~95% |
-| **M4** | Phase 5 builds | 2026-07-25 | ⏳ ~40% (APK+Web; AAB/iOS open) |
-| **M5** | Store release | 2026-08-05 | ⏳ Pending decisions |
+**단일 기준 문서:** `docs/APPLIED_AND_ROADMAP_PLAN_2026-08-10.md`
 
-### Gantt
+| 구분 | 내용 |
+|------|------|
+| **적용됨** | KRV/KJV/ASV 병렬, 본문 검증 PASS, PD 찬송 102, 교독 51, 기도 본문만, 테스트 5/5 |
+| **다음 Top3** | ① 스토어/서명 ② 역본 선택 저장+온보딩 ③ 절 복사/공유 + 기기 스모크 |
+| **이후** | 위치 복원·통독·하이라이트·라이선스 화면 |
+| **비권장** | 개역개정·비-PD 찬송·강제 계정 |
 
-```
-Week | Focus                                      | Status
------|--------------------------------------------|--------
-1–4  | P0–3                                       | ✅
-5–6  | P4; hymn expand PARKED                     | ✅/⏸
-7    | P5 APK + Web                               | ✅ 2026-07-17
-7–8  | Signing, AAB, store, iOS                   | ⏳ NEXT
-8+   | Release submit                             | ⏳
-```
+See also **`docs/PROJECT_REPORT_2026-08-10.md` §6**.  
 
 ---
 
-## References
-- `docs/STATUS_REPORT_2026-07-17.md` — EOD detail  
-- `docs/Task_Prioritized_Backlog_and_Schedule_2026-06-19.md` — task list  
-- `docs/DEPLOY_CHECKLIST.md` — deploy + decisions  
-- `CHANGELOG.md` — 1.0.0+1  
+## Related docs
+
+- `docs/STATUS_REPORT_2026-08-10.md`  
+- `docs/PROJECT_REPORT_2026-08-10.md`  
+- `docs/STATUS_REPORT_2026-07-17.md` (historical)  

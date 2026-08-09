@@ -1,4 +1,4 @@
-Version: 개역개정 (Public Domain)
+Version: 개역한글 (KRV) — Public Domain
 Total Books: 66
 Total Chapters: 1171
 Total Verses: 30625

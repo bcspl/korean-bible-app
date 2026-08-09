@@ -1,7 +1,7 @@
 # Phase 5 — Deploy Checklist
 
-**Updated:** 2026-07-17 EOD (session ceased)  
-**App version:** `1.0.0+1` (`pubspec.yaml`)
+**Updated:** 2026-08-10  
+**App version:** `1.0.0+1` (`pubspec.yaml`) — bump before store submit after content release  
 
 ---
 
@@ -9,14 +9,22 @@
 
 | Item | Status | Notes |
 |------|--------|--------|
-| `flutter test` | ✅ | 5/5 |
-| `flutter analyze` | ✅ | 0 errors (prefer_const infos only) |
-| Android release APK | ✅ | `build/app/outputs/flutter-apk/app-release.apk` **54.9 MB** (debug-signed) |
-| Android App Bundle (Play) | ⏳ | Needs **release keystore** (not debug) |
-| Web release | ✅ | `build/web/` (main.dart.js ~3 MB) |
-| iOS archive | ⛔ | Requires **macOS + Xcode** (not on this Windows machine) |
-| Play / App Store listing | ⏳ | Blocked on IDs + assets + privacy text |
-| Hymn expansion / real scores | ⏸ PARKED | Later |
+| `flutter test` | ✅ | 5/5 (2026-08-10) |
+| `flutter analyze` | ✅ | 0 errors |
+| Bible text verify | ✅ | `python scripts/verify_bible_texts.py` PASS |
+| Content | ✅ | KRV+KJV+ASV · hymns 102 · readings 51 |
+| Android release APK | ⚠️ | Prior 2026-07-17 build; **rebuild** after multi-version assets |
+| Android App Bundle (Play) | ⏳ | Needs **release keystore** |
+| Web release | ⚠️ | Rebuild `flutter build web --release` recommended |
+| iOS archive | ⛔ | macOS + Xcode |
+| Store listing | ⏳ | IDs + privacy + screenshots |
+| Hymn official scores | ⏸ PARKED | |
+
+### Store listing notes (content claims)
+
+- Bible: **개역한글(KRV), KJV, ASV** — Public Domain; **not** 개역개정  
+- Hymns/readings: PD only; not affiliated with 한국찬송가공회 official hymnal  
+- Full description may mention offline multi-version parallel reading  
 
 ---
 
@@ -115,7 +123,7 @@ Needs Apple Developer account + bundle ID (not `com.example.*`).
 |-------|--------|
 | Title | 한국어 성경 (오프라인) |
 | Short description | 완전 오프라인 한국어 성경 · 찬송 · 예배자료 |
-| Full description | 개역 계열 본문 오프라인 열람, 북마크, Public Domain 찬송가, 사도신경·주기도문·교독문. 광고·계정 없음. |
+| Full description | 개역한글(KRV)·KJV·ASV 오프라인 병렬 열람, 북마크, Public Domain 찬송가, 사도신경·주기도문·교독문. 광고·계정 없음. 개역개정 미수록. |
 | Category | Books & Reference / Lifestyle |
 | Content rating | Everyone |
 | Privacy | Offline-first; bookmarks/favorites on device; no account required (confirm analytics: currently none) |

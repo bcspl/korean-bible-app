@@ -1,5 +1,6 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../models/bible_version.dart';
 import '../providers/bible_provider.dart';
 import 'about_screen.dart';
 import 'bookmark_list_screen.dart';
@@ -9,6 +10,7 @@ import 'lords_prayer_screen.dart';
 import 'responsive_reading_screen.dart';
 import 'chapter_list_screen.dart';
 import 'verse_viewer_screen.dart';
+import '../widgets/bible_version_selector.dart';
 
 class BookListScreen extends StatefulWidget {
   const BookListScreen({super.key});
@@ -148,13 +150,14 @@ class _BookListScreenState extends State<BookListScreen> {
             ),
           ),
 
-          // Version info
+          const BibleVersionSelector(dense: true),
           Padding(
-            padding: const EdgeInsets.only(bottom: 4),
+            padding: const EdgeInsets.only(bottom: 4, top: 4),
             child: Consumer<BibleProvider>(
               builder: (context, provider, _) => Text(
-                '버전: ${provider.version}',
-                style: const TextStyle(fontSize: 12, color: Colors.grey),
+                '기본 본문: ${provider.version} · 병렬: ${provider.activeVersions.map((v) => v.code).join(", ")} (PD)',
+                style: const TextStyle(fontSize: 11, color: Colors.grey),
+                textAlign: TextAlign.center,
               ),
             ),
           ),

@@ -1,34 +1,59 @@
-# Korean Bible App - 우선순위별 Task 백로그 및 스케줄 (2026-06-19, Updated 2026-06-27)
+# Korean Bible App - 우선순위별 Task 백로그 및 스케줄
 
-> **참고**: 전체 로드맵은 `Project_Status_and_Updated_Roadmap_2026-06-19.md` 참조
+> **참고**: 로드맵 `Project_Status_and_Updated_Roadmap_2026-06-19.md` · 종합보고 `PROJECT_REPORT_2026-08-10.md`
 
-## 현재 진행 상황 요약 (2026-07-17 EOD — session ceased)
-**전체 로드맵 대비 진행률**: **~88%** 완료
-- ✅ 완료: Phase 0–4 (hymn expand frozen) + Phase 5 partial
-  - hymns: **104 PD**, renumber, fav on 북마크, educational SVG (**PARKED** further work)
-  - **APK release** 54.9 MB ✅ · **Web release** `build/web` ✅
-  - Tests 5/5 · analyze 0 errors · label `한국어 성경`
-- ⏸ **PARKED:** more hymns, real Korean score images
-- ⏳ **NEXT session:** production signing, AAB, store decisions, device smoke-test
-- **당장 다음 할 일 (Top 3)**:
+## 현재 진행 상황 요약 (2026-08-10)
+**전체 로드맵 대비 진행률**: **~92%** 완료
+- ✅ Phase 0–4 + 콘텐츠 품질(다역본 KRV/KJV/ASV, 본문 검증 PASS, PD 찬송 102, 교독 51, 기도문 정리)
+- ✅ Phase 5 partial: APK/Web 빌드 (2026-07-17; 콘텐츠 변경 후 **재빌드 권장**)
+- ⏸ PARKED: 공식 악보·대규모 비-PD 찬송
+- ⏳ NEXT: 스토어 결정 · 서명 · AAB · 사용성(역본 기억·절 복사)
+- **Top 3**:
   1. User decisions (package ID, ship target, keystore, privacy URL, email)
   2. Android production signing + `appbundle`
-  3. Store listing + APK device smoke-test
+  3. UX: version preference persistence + verse copy/share + device smoke-test
 
 **시각적 진행 표시**:
 ```
-로드맵 전체: [█████████████████░░░] ~88%
+로드맵 전체: [██████████████████░░] ~92%
 Phase 0-3:   [█████████████] 100% ✅
-Phase 4:     [████████████] ~95% ✅ (hymns frozen)
-Phase 5:     [████░░░░░░] ~40% ⏳ (APK+Web done)
+Phase 4:     [████████████] ~96% ✅
+Phase 5:     [████░░░░░░] ~40% ⏳
 ```
 
-**마일스톤 (2026-07-17 EOD)**:
-- M1 Phase 0-2 MVP ✅ 2026-06-27
-- M2 Phase 3 features ✅ 2026-07-04
-- M3 Phase 4 polish ✅ ~95%
-- M4 Phase 5 builds ⏳ ~40% (APK+Web ✅; AAB/signing/iOS open) target 2026-07-25
-- M5 Store package ⏳ target 2026-08-05 (blocked on user decisions)
+**마일스톤**:
+- M1–M3 ✅
+- M4 Phase 5 builds ⏳ ~40–45%
+- M5 Store ⏳ (user decisions)
+- Multi-version + text QA ✅ 2026-08-10
+
+### 2026-08-10 완료 항목 (추가)
+- [x] KRV 완전본 교체 + Hive data_revision 재시드
+- [x] KJV/ASV 오프라인 + 절 병렬 UI
+- [x] `verify_bible_texts.py` PASS
+- [x] PD 찬송 카탈로그·교독문 51·주기도문 기도본문만
+- [x] 프로젝트 보고서·문서 일괄 갱신
+
+### 권장 백로그 (사용성·가치) — 신규
+> 상세: `docs/APPLIED_AND_ROADMAP_PLAN_2026-08-10.md` (현재 적용 vs 향후 계획)
+
+**Sprint 1 (배포·즉시 UX)**
+- [ ] package ID · 키스토어 · AAB · 기기 스모크
+- [ ] 첫 실행 온보딩 (PD·다역본 설명)
+- [ ] 활성 역본 SharedPreferences 저장
+- [ ] 절 롱프레스 복사/공유 (단일·병렬)
+
+**Sprint 2 (리텐션)**
+- [ ] 마지막 읽은 위치 복원
+- [ ] 통독/읽기 계획 (로컬)
+- [ ] 하이라이트 색 3종 (로컬)
+- [ ] 설정 > 라이선스 한눈에 보기
+- [ ] 교독 인도자/회중 강조 모드
+
+**Sprint 3 (선택)**
+- [ ] 태블릿 2열 한·영 대조
+- [ ] TTS (선택)
+- [ ] 찬송 카테고리 필터 UI
 
 ## Phase 1: 데이터 계층 (최우선, 4~5일) - ✅ 완료 (2026-06-27)
 ### Day 1: 모델 정의 (0.5~1일) ✅

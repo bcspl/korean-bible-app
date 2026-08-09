@@ -188,10 +188,11 @@ class _FavoriteHymnTile extends StatelessWidget {
 
   String _hymnSubtitle(Hymn h) {
     final parts = <String>[
+      'PD 무료',
       if (h.category.isNotEmpty) h.category,
       if (h.author != null && h.author!.isNotEmpty) h.author!,
     ];
-    return parts.isEmpty ? '찬송가 즐겨찾기' : parts.join(' • ');
+    return parts.join(' • ');
   }
 
   @override

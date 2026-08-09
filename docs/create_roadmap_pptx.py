@@ -288,7 +288,7 @@ def main():
     # Slide 2: Overview
     add_content_slide(prs, "프로젝트 개요", [
         "## 비전",
-        "완전 무료 오프라인 한국어 성경 앱 (Public Domain - 개역개정 등)",
+        "완전 무료 오프라인 한국어 성경 앱 (Public Domain - 개역한글 / KRV)",
         "",
         "## 주요 목표",
         "- 인터넷 없이 성경 읽기, 검색, 북마크 지원 (메모 기능 제외)",

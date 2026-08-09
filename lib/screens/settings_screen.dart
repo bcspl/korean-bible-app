@@ -71,7 +71,7 @@ class SettingsScreen extends StatelessWidget {
               ),
               const Divider(),
               const ListTile(
-                title: Text('버전: 1.0.0 (개역개정)'),
+                title: Text('버전: 1.0.0 (개역한글 / KRV)'),
               ),
               const ListTile(
                 title: Text('데이터 출처: Public Domain'),

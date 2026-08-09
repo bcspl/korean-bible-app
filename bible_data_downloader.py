@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-Korean Bible (Public Domain) OSIS Downloader & Parser
+Korean Bible KRV (개역한글) OSIS Downloader & Parser
 - Downloads kor-korean.osis.xml from seven1m/open-bibles
+  (Unbound Bible Korean text — KRV / 개역한글 wording, not NKRV 개역개정)
 - Converts to clean JSON structure for Flutter/Hive
 - Outputs: kor_bible_full.json + bible_stats.txt
 Run this on your local machine with internet access.
@@ -83,9 +84,10 @@ def parse_osis_to_json(xml_path):
             })
     
     data = {
-        "version": "개역개정 (Public Domain)",
+        "version": "개역한글 (KRV)",
         "source": "https://github.com/seven1m/open-bibles (kor-korean.osis.xml)",
         "license": "Public Domain",
+        "abbreviation": "KRV",
         "total_books": len(books),
         "books": books
     }
@@ -95,11 +97,12 @@ def parse_osis_to_json(xml_path):
     
     with open(OUTPUT_STATS, "w", encoding="utf-8") as f:
         total_chapters = sum(len(b['chapters']) for b in books)
-        f.write(f"Version: 개역개정 (Public Domain)\n")
+        f.write(f"Version: 개역한글 (KRV) — Public Domain\n")
         f.write(f"Total Books: {len(books)}\n")
         f.write(f"Total Chapters: {total_chapters}\n")
         f.write(f"Total Verses: {verse_count}\n")
         f.write(f"Source: seven1m/open-bibles - Public Domain\n")
+        f.write(f"Note: Not NKRV (개역개정); text uses classic KRV wording.\n")
     
     print(f"\nParsing complete!")
     print(f"  Books: {len(books)}")

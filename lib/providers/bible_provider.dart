@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../models/bible_book.dart';
 import '../models/bible_bookmark.dart';
+import '../models/bible_version.dart';
 import '../models/hymn.dart';
 import '../services/bible_data_service.dart';
 
@@ -78,12 +79,23 @@ const Map<String, Map<String, String>> _bibleBookNames = {
   'Rev': {'korean': '요한계시록', 'english': 'Revelation'},
 };
 
-String getBookDisplayName(String key) {
+String getBookDisplayName(String key, {bool preferEnglish = false}) {
   final names = _bibleBookNames[key] ?? {'korean': key, 'english': key};
+  if (preferEnglish) {
+    return '${names['english']} (${names['korean']})';
+  }
   return '${names['korean']} (${names['english']})';
 }
 
+String getBookKoreanName(String key) =>
+    _bibleBookNames[key]?['korean'] ?? key;
+
+String getBookEnglishName(String key) =>
+    _bibleBookNames[key]?['english'] ?? key;
+
 class BibleProvider with ChangeNotifier {
+  final BibleDataService _service = BibleDataService();
+
   List<BibleBook> _books = [];
   int _currentBookIndex = 0;
   int _currentChapterIndex = 0;
@@ -92,12 +104,22 @@ class BibleProvider with ChangeNotifier {
   bool _hasError = false;
   String _errorMessage = '';
 
+  /// Active Bible versions for parallel reading (1–3). Order = display order.
+  List<BibleVersionId> _activeVersions = [
+    BibleVersionId.krv,
+    BibleVersionId.kjv,
+  ];
+
   List<BibleBook> get books => _books;
   bool get isLoading => _isLoading;
   bool get hasError => _hasError;
   String get errorMessage => _errorMessage;
 
-  BibleBook? get currentBook => _books.isNotEmpty ? _books[_currentBookIndex] : null;
+  List<BibleVersionId> get activeVersions =>
+      List.unmodifiable(_activeVersions);
+
+  BibleBook? get currentBook =>
+      _books.isNotEmpty ? _books[_currentBookIndex] : null;
   int get currentBookIndex => _currentBookIndex;
   int get currentChapterIndex => _currentChapterIndex;
 
@@ -119,24 +141,74 @@ class BibleProvider with ChangeNotifier {
 
   String get version => BibleDataService.currentVersion;
 
+  String versionLabel(BibleVersionId id) => _service.labelFor(id);
+
+  /// Toggle a version on/off. Keeps at least 1 and at most 3.
+  void setVersionEnabled(BibleVersionId id, bool enabled) {
+    if (enabled) {
+      if (_activeVersions.contains(id)) return;
+      if (_activeVersions.length >= 3) return;
+      _activeVersions = [..._activeVersions, id];
+    } else {
+      if (_activeVersions.length <= 1) return;
+      _activeVersions = _activeVersions.where((v) => v != id).toList();
+    }
+    notifyListeners();
+  }
+
+  void setActiveVersions(List<BibleVersionId> versions) {
+    final unique = <BibleVersionId>[];
+    for (final v in versions) {
+      if (!unique.contains(v)) unique.add(v);
+      if (unique.length >= 3) break;
+    }
+    if (unique.isEmpty) unique.add(BibleVersionId.krv);
+    _activeVersions = unique;
+    notifyListeners();
+  }
+
+  bool isVersionActive(BibleVersionId id) => _activeVersions.contains(id);
+
+  String? verseTextFor(
+    BibleVersionId id,
+    String bookKey,
+    int chapter,
+    int verse,
+  ) =>
+      _service.verseText(id, bookKey, chapter, verse);
+
+  List<int> verseNumbersForChapter(
+    String bookKey,
+    int chapter, {
+    List<BibleVersionId>? versions,
+  }) =>
+      _service.verseNumbers(
+        bookKey,
+        chapter,
+        versions: versions ?? _activeVersions,
+      );
+
   Future<void> loadBooks() async {
     if (_books.isNotEmpty) return;
     _isLoading = true;
     _hasError = false;
     notifyListeners();
     try {
-      final service = BibleDataService();
-      _books = await service.getBooks();
+      await _service.loadAllVersions();
+      _books = await _service.getBooks();
       if (_books.isEmpty) {
-        _books = await service.loadAndSeedBibleData();
+        _books = await _service.loadAndSeedBibleData();
       }
       await loadBookmarks();
       await loadHymns();
     } catch (e) {
       _hasError = true;
       final err = e.toString();
-      if (err.contains('lock') || err.contains('PathAccess') || err.contains('access')) {
-        _errorMessage = '데이터 파일이 다른 프로세스에 의해 잠겨 있습니다.\n다른 앱 인스턴스를 종료하거나 컴퓨터를 재시작 후 다시 시도하세요.';
+      if (err.contains('lock') ||
+          err.contains('PathAccess') ||
+          err.contains('access')) {
+        _errorMessage =
+            '데이터 파일이 다른 프로세스에 의해 잠겨 있습니다.\n다른 앱 인스턴스를 종료하거나 컴퓨터를 재시작 후 다시 시도하세요.';
       } else {
         _errorMessage = err;
       }
@@ -296,29 +368,57 @@ class BibleProvider with ChangeNotifier {
     return getBookDisplayName(currentBook!.book);
   }
 
-  String getBookDisplayNameForIndex(int index) {
+  String getBookDisplayNameForIndex(int index, {bool preferEnglish = false}) {
     if (index < 0 || index >= _books.length) return '';
-    return getBookDisplayName(_books[index].book);
+    return getBookDisplayName(_books[index].book,
+        preferEnglish: preferEnglish);
+  }
+
+  String bookKeyAt(int index) {
+    if (index < 0 || index >= _books.length) return '';
+    return _books[index].book;
   }
 
   List<VerseMatch> searchVerses(String query) {
     if (query.trim().isEmpty) return [];
     final q = query.toLowerCase().trim();
     final results = <VerseMatch>[];
+    final searchVersions = _activeVersions.isEmpty
+        ? [BibleVersionId.krv]
+        : _activeVersions;
+
     for (int bi = 0; bi < _books.length; bi++) {
       final book = _books[bi];
+      final key = book.book;
       final disp = getBookDisplayNameForIndex(bi).toLowerCase();
+      final en = getBookEnglishName(key).toLowerCase();
+      final ko = getBookKoreanName(key).toLowerCase();
       for (int ci = 0; ci < book.chapters.length; ci++) {
         final chapter = book.chapters[ci];
+        final chNum = chapter.chapter;
+        // Use KRV verse list as navigation backbone
         for (int vi = 0; vi < chapter.verses.length; vi++) {
           final verse = chapter.verses[vi];
-          if (verse.text.toLowerCase().contains(q) || disp.contains(q)) {
+          final vNum = verse.verse;
+          var hit = disp.contains(q) || en.contains(q) || ko.contains(q);
+          String snippet = '$chNum:$vNum ${verse.text}';
+          if (!hit) {
+            for (final ver in searchVersions) {
+              final t = verseTextFor(ver, key, chNum, vNum) ?? '';
+              if (t.toLowerCase().contains(q)) {
+                hit = true;
+                snippet = '$chNum:$vNum [${ver.code}] $t';
+                break;
+              }
+            }
+          }
+          if (hit) {
             results.add(VerseMatch(
               bi,
               ci,
               vi,
               getBookDisplayNameForIndex(bi),
-              '${ci + 1}:${vi + 1} ${verse.text}',
+              snippet,
             ));
             if (results.length >= 50) return results;
           }

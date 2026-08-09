@@ -22,14 +22,14 @@ class AboutScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 8),
-              Text('완전 무료 • 오프라인 • Public Domain (개역개정)'),
+              Text('완전 무료 • 오프라인 • Public Domain (개역한글 / KRV)'),
               SizedBox(height: 16),
               Text(
                 '주요 기능',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
               Text('• 성경 읽기 (구약/신약 전체, 검색, 북마크)\n'
-                  '• 찬송가 (가사 + 악보 placeholder)\n'
+                  '• 찬송가 (Public Domain 전 곡 · 한/영 가사 · 유래)\n'
                   '• 사도신경, 주기도문, 교독문\n'
                   '• 접근성 (큰 글씨, 다크모드 준비)'),
               SizedBox(height: 16),
@@ -37,8 +37,11 @@ class AboutScreen extends StatelessWidget {
                 '데이터 출처',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
-              Text('한국어 성경: Public Domain (개역개정 등)\n'
-                  '찬송가/신경/기도문: 공개 자료 기반 샘플'),
+              Text('성경: 개역한글(KRV) · KJV · ASV (모두 Public Domain)\n'
+                  'KRV: 성경전서 개역한글판 (대한성서공회) PD\n'
+                  'KJV/ASV: open-bibles 등 PD 원문 검증\n'
+                  '병렬 열람: 절 단위 최대 3개 역본 동시 표시\n'
+                  '찬송가·교독문: PD 전용 (찬송가 공식 판권·개역개정 미사용)'),
               SizedBox(height: 16),
               Text('버전: 1.0.0+1\nFlutter + Hive'),
               SizedBox(height: 24),
