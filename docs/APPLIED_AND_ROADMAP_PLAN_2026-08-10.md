@@ -1,7 +1,11 @@
 # 현재 적용 내용 · 향후 적용 계획 (사용성·가치 포함)
 
 **기준일:** 2026-08-10  
-**관련:** `PROJECT_REPORT_2026-08-10.md` · `STATUS_REPORT_2026-08-10.md` · 로드맵 PPTX  
+**Play Store 목표:** **2026-11 공개**  
+**관련:** `PROJECT_REPORT_2026-08-10.md` · `project-management/` · Binance 스타일 PPTX  
+
+**PM 운영 폴더:** `docs/project-management/`  
+**보고서 PPTX:** `Desktop/Bible Project/KoreanBible_ProjectReport_YYYY-MM-DD.pptx`  
 
 ---
 

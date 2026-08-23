@@ -46,6 +46,7 @@ python scripts/verify_bible_texts.py          # 본문 검증
 |------|------|
 | [docs/PROJECT_REPORT_2026-08-10.md](docs/PROJECT_REPORT_2026-08-10.md) | **종합 보고서 · 권장사항** |
 | [docs/APPLIED_AND_ROADMAP_PLAN_2026-08-10.md](docs/APPLIED_AND_ROADMAP_PLAN_2026-08-10.md) | **현재 적용 vs 향후 계획** (사용성·가치) |
+| [docs/project-management/](docs/project-management/) | **PM 구조** · 11월 스토어 · 세션 로그 |
 | [docs/STATUS_REPORT_2026-08-10.md](docs/STATUS_REPORT_2026-08-10.md) | 최신 상태 |
 | [docs/DEPLOY_CHECKLIST.md](docs/DEPLOY_CHECKLIST.md) | 배포 체크리스트 |
 | [docs/Project_Status_and_Updated_Roadmap_2026-06-19.md](docs/Project_Status_and_Updated_Roadmap_2026-06-19.md) | 로드맵 |
