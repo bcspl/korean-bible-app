@@ -1,7 +1,8 @@
 # Play Store 공개 전 필수 과제 체크리스트
 
 **목표:** 2026-11 Play Store 오픈  
-**Last updated:** 2026-08-10
+**Last updated:** 2026-08-24  
+**재개:** [`RESUME_HERE.md`](./RESUME_HERE.md) · 절차: [`PLAYSTORE_RELEASE_GUIDE_2026-08-10.md`](./PLAYSTORE_RELEASE_GUIDE_2026-08-10.md)
 
 공개(1.0) 전에 **반드시** 완료할 항목만 선별. (nice-to-have는 VALUE 문서로)
 
