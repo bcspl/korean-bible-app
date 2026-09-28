@@ -2,7 +2,7 @@
 
 **목표:** 2026-11 Play Store 오픈  
 **Last updated:** 2026-09-29  
-**재개:** [`RESUME_HERE.md`](./RESUME_HERE.md) · 절차: [`PLAYSTORE_RELEASE_GUIDE_2026-08-10.md`](./PLAYSTORE_RELEASE_GUIDE_2026-08-10.md)
+**재개:** [`RESUME_HERE.md`](./RESUME_HERE.md) · 절차: [`PLAYSTORE_RELEASE_GUIDE_2026-08-10.md`](./PLAYSTORE_RELEASE_GUIDE_2026-08-10.md) · **상세 정본:** [`ANDROID_RELEASE_PROCESS.md`](./ANDROID_RELEASE_PROCESS.md)
 
 공개(1.0) 전에 **반드시** 완료할 항목만 선별. (nice-to-have는 VALUE 문서로)
 
@@ -13,7 +13,7 @@
 | # | 과제 | 상태 | 메모 |
 |---|------|------|------|
 | R1 | 앱 설명: PD · KRV/KJV/ASV · **개역개정 미수록** 명시 | ⏳ | 스토어 문구 초안 있음(DEPLOY) |
-| R2 | 개인정보처리방침 URL (오프라인·수집 없음 명시) | ⏳ | 호스팅 필요 |
+| R2 | 개인정보처리방침 URL (오프라인·수집 없음 명시) | 🔄 | 초안 `docs/privacy/` (9/29) · GitHub Pages 게시 필요 · **앱 내 방침 텍스트/링크도 필요** |
 | R3 | 콘텐츠 등급 / 대상 연령 | ⏳ | Everyone 권장 |
 | R4 | 한국찬송가·공식 악보 아님 고지 | ✅ | 앱 내 문구 반영 |
 
@@ -27,7 +27,7 @@
 | R6 | 앱 표시명 확정 (한국어 성경) | 🔄 | 라벨 일부 반영 |
 | R7 | 업로드 키스토어 생성 · `key.properties` (미커밋) | ✅ | `C:\Users\LSH\secure\korean-bible-upload.jks` · alias `upload` · PKCS12 (2026-09-29) |
 | R8 | `flutter build appbundle --release` | ✅ | 업로드 키 서명 AAB 56.9MB (2026-09-29) · 콘텐츠 변경 시 재빌드 |
-| R9 | targetSdk / 최신 Play 요구 충족 | ⏳ | 빌드 시 doctor |
+| R9 | targetSdk / 최신 Play 요구 충족 | ✅ | targetSdk 36 (2026-08-31~ 요구 API 36 충족) |
 | R10 | 64-bit / ABI 요구 충족 | ⏳ | Flutter 기본 확인 |
 | R11 | 프로덕션 서명 APK/AAB 실기기 설치 테스트 | ⏳ | |
 
@@ -53,7 +53,7 @@
 | R18 | 아이콘 512 / 피처 그래픽 | 🔄 아이콘 있음 |
 | R19 | 폰 스크린샷 4–8장 (성경·병렬·찬송·교독) | ⏳ |
 | R20 | 짧은/긴 설명 최종 카피 | ⏳ |
-| R21 | 지원 이메일 / 개발자 계정 | ⏳ |
+| R21 | 지원 이메일 / 개발자 계정 (+ 비공개 테스트 12명×14일) | ⛔ |
 
 ---
 

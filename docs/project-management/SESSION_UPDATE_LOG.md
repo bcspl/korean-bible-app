@@ -5,6 +5,28 @@
 
 ---
 
+## 2026-09-29 — GitHub push · 개인정보처리방침 초안 · Android 출시 정본 + PPTX
+
+### 한 일
+- 비밀정보 재점검(키·.jks 미추적, push 대상/전체 이력에 비밀번호 없음) 후 `git push origin main` (`ae7b2b1..fae983b`)
+- 코드 조사 기반 개인정보처리방침 한/영 초안: `docs/privacy/privacy-policy.md` · `index.html` · 호스팅 안내 `README.md`
+  - release 매니페스트 INTERNET 권한 없음 · 제3자 SDK 없음 · 기기 내 저장만(SharedPreferences 3개 설정, Hive 북마크/찬송 즐겨찾기/본문 캐시) · allowBackup 기본값 명시
+- `ANDROID_RELEASE_PROCESS.md` (Phase 0–8 정본 · 완료 내역 · 명령 · 정책 출처)
+- PPTX 27장 `docs/roadmap-pptx/KoreanBible_Android_Release_Process_2026-09-29.pptx` (+ Desktop) · 생성기 `generate_android_release_pptx.py`
+- 정책 웹 확인: 비공개 테스트 12명×14일(2023-11-13 이후 개인 계정) · 타겟 API 36(2026-08-31~) · Data safety/방침 필수 · $25 등록비
+- PLAYSTORE 가이드·체크리스트 상태 갱신 (R2 🔄, R9 ✅, R21 ⛔)
+
+### 막힌 일 / 리스크
+- Play Console 계정·본인 인증 (사용자) — 11월 공개의 critical path
+- 비공개 테스터 12명+ 모집 필요 · 10월 중순 시작해야 11월 공개 가능
+- Play 정책상 **앱 내부에도** 개인정보처리방침 텍스트/링크 필요 → 미구현
+- 키스토어 PC 밖 백업 미완
+
+### 다음 1건
+- R11 실기기 스모크 + 앱 내 방침/라이선스 화면 → Pages 게시 → Console 내부 테스트
+
+---
+
 ## 2026-09-29 — Sprint A3/A4: 업로드 키스토어 + 서명 AAB (R7, R8)
 
 ### 한 일

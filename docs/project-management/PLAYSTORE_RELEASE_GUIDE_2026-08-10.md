@@ -5,7 +5,8 @@
 **앱:** 한국어 성경 (KRV · KJV · ASV · PD 찬송 · 교독 · 예배)  
 **PPTX:** `Desktop/Bible Project/KoreanBible_PlayStore_ReleaseGuide_2026-08-24.pptx`  
 **디자인:** Linear 스타일 (다크 · Indigo `#5E6AD2`)  
-**다음 세션 시작:** [`RESUME_HERE.md`](./RESUME_HERE.md)
+**다음 세션 시작:** [`RESUME_HERE.md`](./RESUME_HERE.md)  
+**상세 정본 (2026-09-29~):** [`ANDROID_RELEASE_PROCESS.md`](./ANDROID_RELEASE_PROCESS.md) — 명령·정책 출처·완료 내역은 이 문서 기준
 
 ---
 
@@ -14,14 +15,14 @@
 | 영역 | 진행 | 메모 |
 |------|------|------|
 | 제품 기능 | ~92% | 다역본·검증·찬송·교독·기도 완료 |
-| 스토어 공개 준비 | ~20% | packageId · 서명 · 정책 · 리스팅 미완 |
+| 스토어 공개 준비 | ~40% | packageId · 키스토어 · 서명 AAB 완료 (9/29) · 정책·리스팅·Console 미완 |
 | Drive 백업/업로드 | ✅ | `gdrive_upload` MCP 연결됨 |
 
 **차단 항목 (지금 결정 필요):**
-1. `applicationId` (`com.example.*` 사용 불가)
-2. 업로드 키스토어 경로/생성
-3. 개인정보처리방침 URL
-4. 지원 이메일 · Play 개발자 계정
+1. ~~`applicationId`~~ ✅ `com.lsh.koreanbible` (9/28)
+2. ~~업로드 키스토어~~ ✅ `C:\Users\LSH\secure\korean-bible-upload.jks` (9/29)
+3. 개인정보처리방침 URL — 초안 `docs/privacy/` ✅ · GitHub Pages 게시 필요
+4. 지원 이메일 · Play 개발자 계정 (비공개 테스트 12명×14일 요건 포함)
 
 ---
 
@@ -31,12 +32,12 @@
 
 | # | 작업 | 상태 |
 |---|------|------|
-| A1 | packageId 확정 · Android/iOS 반영 | ⏳ |
+| A1 | packageId 확정 · Android 반영 (iOS는 추후) | ✅ 9/28 |
 | A2 | 표시명 `한국어 성경` 확정 | 🔄 |
-| A3 | 키스토어 + `key.properties` (gitignore) | ⏳ |
-| A4 | `flutter build appbundle --release` | ⏳ |
+| A3 | 키스토어 + `key.properties` (gitignore) | ✅ 9/29 |
+| A4 | `flutter build appbundle --release` | ✅ 9/29 (56.9MB) |
 | A5 | 프로덕션 서명 APK/AAB 실기기 설치 | ⏳ |
-| A6 | targetSdk / 64-bit Play 요구 확인 | ⏳ |
+| A6 | targetSdk / 64-bit Play 요구 확인 | 🔄 targetSdk 36 ✅ |
 
 ### Sprint B — 공개 전 UX (10월)
 
@@ -87,13 +88,14 @@
 1. [Google Play Console](https://play.google.com/console) 가입 · 개발자 등록비 결제  
 2. **앱 만들기** → 앱 이름 · 기본 언어(한국어) · 앱/게임 · 무료  
 3. 정책 선언 설문 시작 (나중에 완성 가능)  
-4. **테스트 트랙** 권장: 내부 테스트 → 비공개 → 프로덕션  
+4. **테스트 트랙**: 내부 테스트 → 비공개 → 프로덕션  
+5. ⚠️ **신규 개인 계정은 비공개 테스트에 12명 이상 · 14일 연속 opt-in 후에만 프로덕션 액세스 신청 가능** (2026-09-29 확인)  
 
 ### Phase 2 — 앱 ID · 서명 준비 (로컬)
 
 1. `android/app/build.gradle.kts`의 `applicationId` 변경 (`com.example.*` 제거)  
 2. 필요 시 패키지 디렉터리/namespace 정리  
-3. 키스토어 **1회** 생성 (안전한 폴더, **절대 git 커밋 금지**):
+3. 키스토어 **1회** 생성 (안전한 폴더, **절대 git 커밋 금지**) — ✅ 2026-09-29 실행 완료 (실제 명령은 `ANDROID_RELEASE_PROCESS.md` Phase 2: `-storetype PKCS12`, 비대화식):
 
 ```powershell
 mkdir C:\Users\LSH\secure -Force

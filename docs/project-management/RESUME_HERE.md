@@ -5,7 +5,8 @@
 **목표:** 2026-11 Google Play 1.0 공개
 
 > **다음 세션 첫 문장 예시**  
-> `docs/project-management/RESUME_HERE.md 읽고 Sprint A5(실기기 설치/R11)부터 이어서 해줘.`
+> `docs/project-management/RESUME_HERE.md 읽고 Sprint A5(실기기 설치/R11)부터 이어서 해줘.`  
+> 전체 절차 정본: [`ANDROID_RELEASE_PROCESS.md`](./ANDROID_RELEASE_PROCESS.md) · PPTX `docs/roadmap-pptx/KoreanBible_Android_Release_Process_2026-09-29.pptx`
 
 ---
 
@@ -14,7 +15,7 @@
 | 영역 | % | 메모 |
 |------|---|------|
 | 제품 기능 | ~92% | KRV/KJV/ASV · 찬송102 · 교독51 · 기도 · 검증 PASS |
-| 스토어 공개 준비 | ~40% | packageId · 키스토어 · 서명 AAB 완료 · **Privacy URL·Console 대기** |
+| 스토어 공개 준비 | ~42% | ID · 키스토어 · 서명 AAB ✅ · Privacy 초안 ✅ · **Pages 게시·Console 대기** |
 | Drive 업로드 | ✅ | `gdrive_upload` MCP (H:\내 드라이브 동기화) |
 
 **제품은 거의 끝 · 병목은 Play 기술/정책 결정.**
@@ -48,8 +49,9 @@ PPTX: `Desktop/Bible Project/KoreanBible_PlayStore_ReleaseGuide_2026-08-24.pptx`
 1. ~~**packageId**~~ — ✅ `com.lsh.koreanbible` (2026-09-28, R5)
 2. **표시명** — `한국어 성경` 확정 여부
 3. ~~**키스토어**~~ — ✅ `C:\Users\LSH\secure\korean-bible-upload.jks` · alias `upload` (2026-09-29, R7) · 비밀번호는 `android/key.properties`(gitignore) + `C:\Users\LSH\secure\korean-bible-key.properties.backup.txt` → **오프라인/암호관리자 백업 필요**
-4. **Privacy URL** — 호스팅처 (GitHub Pages / Notion / 기타)
-5. **지원 이메일** · Play 개발자 계정 준비 여부
+4. **Privacy URL** — 초안 ✅ `docs/privacy/` → GitHub Pages 켜기 (Settings → Pages → main `/docs`) → `https://bcspl.github.io/korean-bible-app/privacy/`
+5. **지원 이메일** · Play 개발자 계정 ($25 · 신분증 · 기기 인증) — **critical path**
+6. **비공개 테스터 12명+ (14일 연속)** — 신규 개인 계정 필수. 11월 공개 → 10월 중순 시작
 
 ### ✅ 결정 없이 바로 할 수 있는 것 (대기 중 병행)
 
@@ -59,7 +61,7 @@ PPTX: `Desktop/Bible Project/KoreanBible_PlayStore_ReleaseGuide_2026-08-24.pptx`
 - 설정 > 라이선스/출처 화면
 - `flutter build apk --release` 스모크용 재빌드 (debug/upload 키 전)
 
-**권장 다음 1건:** 서명 APK 실기기 설치 스모크 (R11) → Privacy URL (R2) → Play Console 앱 생성·내부 테스트에 AAB 업로드.
+**권장 다음 1건:** 서명 APK 실기기 설치 스모크 (R11) · 앱 내 개인정보처리방침/라이선스 화면 (Play 정책) → Pages 게시 (R2) → Console 앱 생성·내부 테스트.
 
 체크리스트 ID: **R11 → R2 → R21** (R5·R7·R8 ✅) (`RELEASE_CHECKLIST_PLAYSTORE.md`)
 
@@ -82,6 +84,9 @@ PPTX: `Desktop/Bible Project/KoreanBible_PlayStore_ReleaseGuide_2026-08-24.pptx`
 | PM / 이 파일 | `docs\project-management\RESUME_HERE.md` |
 | 출시 가이드 MD | `docs\project-management\PLAYSTORE_RELEASE_GUIDE_2026-08-10.md` |
 | R1–R25 체크 | `docs\project-management\RELEASE_CHECKLIST_PLAYSTORE.md` |
+| 출시 정본 | `docs\project-management\ANDROID_RELEASE_PROCESS.md` |
+| 개인정보처리방침 | `docs\privacy\privacy-policy.md` · `index.html` · `README.md`(호스팅) |
+| 출시 PPTX | `docs\roadmap-pptx\KoreanBible_Android_Release_Process_2026-09-29.pptx` (+ Desktop\Bible Project) |
 | UX 백로그 | `docs\project-management\VALUE_AND_USABILITY.md` |
 | 세션 로그 | `docs\project-management\SESSION_UPDATE_LOG.md` |
 | PPTX (로컬) | `Desktop\Bible Project\KoreanBible_PlayStore_ReleaseGuide_2026-08-24.pptx` |
@@ -109,7 +114,9 @@ PPTX: `Desktop/Bible Project/KoreanBible_PlayStore_ReleaseGuide_2026-08-24.pptx`
 - [x] packageId (com.lsh.koreanbible)
 - [x] 업로드 키스토어 + release signingConfig (R7)
 - [x] 서명 AAB uild\app\outputs\bundle\release\app-release.aab (R8)
-- [ ] Privacy URL / Console 업로드 / 실기기(R11)
+- [x] 개인정보처리방침 초안 (한/영) + index.html (`docs/privacy/`)
+- [x] Android 출시 정본 문서 + PPTX 27장 (9/29)
+- [ ] Pages 게시 / Console 업로드 / 실기기(R11) / 앱 내 방침 텍스트
 - [ ] 온보딩 · 역본 저장 · 절 복사 · 스크린샷
 
 ---
