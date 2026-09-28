@@ -5,6 +5,25 @@
 
 ---
 
+## 2026-09-28 — Sprint A1: applicationId → com.lsh.koreanbible (R5)
+
+### 한 일
+- 8/24 미커밋 문서 작업 커밋 (`docs: 2026-08-24 Play Store release guide checkpoint`)
+- Android `applicationId`/`namespace`를 `com.lsh.koreanbible`로 변경
+- `MainActivity.kt` 패키지 디렉터리 이동 (`com/example/korean_bible_app` → `com/lsh/koreanbible`)
+- `flutter pub get` · `flutter analyze` (기존 info 19건, 신규 이슈 없음) · `flutter build apk --release` 성공
+- APK: `build\app\outputs\flutter-apk\app-release.apk` (~58.1MB), package=`com.lsh.koreanbible`
+- R5 체크리스트·RESUME_HERE·본 로그 갱신
+
+### 막힌 일 / 리스크
+- R7 키스토어: 사용자 비밀번호 필요 — 생성·`key.properties`는 다음 세션
+- iOS/macOS/linux/windows 번들 ID는 아직 `com.example.*` (Android만 변경)
+
+### 다음 1건
+- 키스토어 생성 (`C:\Users\LSH\secure\korean-bible-upload.jks`, alias `upload`) + `android/key.properties` + release `signingConfigs` → AAB (R7→R8)
+
+---
+
 ## 2026-08-24 — 체크포인트 저장 (RESUME_HERE)
 
 ### 한 일

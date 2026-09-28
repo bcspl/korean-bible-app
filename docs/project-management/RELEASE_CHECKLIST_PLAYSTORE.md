@@ -1,7 +1,7 @@
 # Play Store 공개 전 필수 과제 체크리스트
 
 **목표:** 2026-11 Play Store 오픈  
-**Last updated:** 2026-08-24  
+**Last updated:** 2026-09-28  
 **재개:** [`RESUME_HERE.md`](./RESUME_HERE.md) · 절차: [`PLAYSTORE_RELEASE_GUIDE_2026-08-10.md`](./PLAYSTORE_RELEASE_GUIDE_2026-08-10.md)
 
 공개(1.0) 전에 **반드시** 완료할 항목만 선별. (nice-to-have는 VALUE 문서로)
@@ -23,7 +23,7 @@
 
 | # | 과제 | 상태 | 메모 |
 |---|------|------|------|
-| R5 | `applicationId` ≠ `com.example.*` | ⏳ | **차단 항목** |
+| R5 | `applicationId` ≠ `com.example.*` | ✅ | `com.lsh.koreanbible` (2026-09-28) |
 | R6 | 앱 표시명 확정 (한국어 성경) | 🔄 | 라벨 일부 반영 |
 | R7 | 업로드 키스토어 생성 · `key.properties` (미커밋) | ⏳ | |
 | R8 | `flutter build appbundle --release` | ⏳ | |
@@ -78,4 +78,4 @@
 
 - 필수 항목 대략 **25** (R1–R25)
 - 완료: 정책 일부·테스트·검증
-- 다음 차단: **R5 packageId · R7 keystore · R2 privacy URL**
+- 다음 차단: **R7 keystore · R2 privacy URL** (R5 packageId 완료)
