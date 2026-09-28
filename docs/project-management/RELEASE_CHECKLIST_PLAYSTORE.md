@@ -1,7 +1,7 @@
 # Play Store 공개 전 필수 과제 체크리스트
 
 **목표:** 2026-11 Play Store 오픈  
-**Last updated:** 2026-09-28  
+**Last updated:** 2026-09-29  
 **재개:** [`RESUME_HERE.md`](./RESUME_HERE.md) · 절차: [`PLAYSTORE_RELEASE_GUIDE_2026-08-10.md`](./PLAYSTORE_RELEASE_GUIDE_2026-08-10.md)
 
 공개(1.0) 전에 **반드시** 완료할 항목만 선별. (nice-to-have는 VALUE 문서로)
@@ -25,8 +25,8 @@
 |---|------|------|------|
 | R5 | `applicationId` ≠ `com.example.*` | ✅ | `com.lsh.koreanbible` (2026-09-28) |
 | R6 | 앱 표시명 확정 (한국어 성경) | 🔄 | 라벨 일부 반영 |
-| R7 | 업로드 키스토어 생성 · `key.properties` (미커밋) | ⏳ | |
-| R8 | `flutter build appbundle --release` | ⏳ | |
+| R7 | 업로드 키스토어 생성 · `key.properties` (미커밋) | ✅ | `C:\Users\LSH\secure\korean-bible-upload.jks` · alias `upload` · PKCS12 (2026-09-29) |
+| R8 | `flutter build appbundle --release` | ✅ | 업로드 키 서명 AAB 56.9MB (2026-09-29) · 콘텐츠 변경 시 재빌드 |
 | R9 | targetSdk / 최신 Play 요구 충족 | ⏳ | 빌드 시 doctor |
 | R10 | 64-bit / ABI 요구 충족 | ⏳ | Flutter 기본 확인 |
 | R11 | 프로덕션 서명 APK/AAB 실기기 설치 테스트 | ⏳ | |
@@ -78,4 +78,4 @@
 
 - 필수 항목 대략 **25** (R1–R25)
 - 완료: 정책 일부·테스트·검증
-- 다음 차단: **R7 keystore · R2 privacy URL** (R5 packageId 완료)
+- 다음 차단: **R2 privacy URL · R21 개발자 계정** (R5·R7·R8 완료) → 다음: R11 실기기 · Console 업로드

@@ -5,6 +5,24 @@
 
 ---
 
+## 2026-09-29 — Sprint A3/A4: 업로드 키스토어 + 서명 AAB (R7, R8)
+
+### 한 일
+- 업로드 키스토어 생성: `C:\Users\LSH\secure\korean-bible-upload.jks` (PKCS12 · RSA 2048 · alias `upload` · CN=LSH, O=personal, C=KR · ~2054-02-14 유효)
+  - SHA-1: `AA:71:3A:D2:54:66:1C:37:1C:3B:18:D6:60:57:65:F6:54:39:9F:A7`
+  - SHA-256: `41:9D:AA:1C:6E:72:33:EB:FC:32:9B:7B:C4:B5:FD:FE:2E:74:94:C2:69:B8:7D:42:19:57:AC:AE:94:6E:33:87`
+- 비밀번호: 무작위 24자 (store=key) — `android/key.properties`(gitignore) + `C:\Users\LSH\secure\korean-bible-key.properties.backup.txt`에만 저장, 출력/커밋 없음
+- `android/app/build.gradle.kts`: `key.properties` 있으면 `signingConfigs.release` 사용, 없으면 debug 서명 fallback
+- `flutter build appbundle --release` 성공 → `build\app\outputs\bundle\release\app-release.aab` (56.9MB), 인증서 지문 일치 확인
+
+### 막힌 일 / 리스크
+- 키스토어 + 비밀번호를 **PC 밖에 백업** 필요 (USB/암호관리자). 분실 시 Play 업로드 키 재설정 절차 필요
+- Privacy URL (R2) · 개발자 계정 (R21) 미정
+
+### 다음 1건
+- 서명 APK 실기기 설치 스모크 (R11) → Privacy URL → Play Console 내부 테스트 AAB 업로드
+
+---
 ## 2026-09-28 — Sprint A1: applicationId → com.lsh.koreanbible (R5)
 
 ### 한 일
