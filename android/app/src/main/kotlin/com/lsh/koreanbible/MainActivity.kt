@@ -1,4 +1,4 @@
-package com.example.korean_bible_app
+package com.lsh.koreanbible
 
 import io.flutter.embedding.android.FlutterActivity
 
