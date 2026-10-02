@@ -5,6 +5,16 @@
 
 ---
 
+## 2026-10-03 (3) — 배너 확정 · 원스토어 출시 PPTX
+
+### 한 일
+- 배너: 인디고/골드 `banner_1024x578.png` 확정, 흑백/빨강 대안 삭제 (repo + Desktop)
+- `docs/roadmap-pptx/KoreanBible_ONEstore_Release_Process_2026-10-03.pptx` 19장 (+ Desktop) · 생성기 `generate_onestore_release_pptx.py` (9/29 덱 스타일 재사용) · PowerPoint 렌더 검수
+
+### 다음 1건
+- 사용자: 원스토어 가입 → 콘솔 등록 → 심사 요청
+
+---
 ## 2026-10-03 (2) — 원스토어 등록 자산 초안
 
 ### 한 일
