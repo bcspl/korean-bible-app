@@ -8,6 +8,8 @@
 > `docs/project-management/RESUME_HERE.md 읽고 Sprint A5(실기기 설치/R11)부터 이어서 해줘.`  
 > 전체 절차 정본: [`ANDROID_RELEASE_PROCESS.md`](./ANDROID_RELEASE_PROCESS.md) · PPTX `docs/roadmap-pptx/KoreanBible_Android_Release_Process_2026-09-29.pptx`
 
+> **원스토어(2026-10-03):** [`ONESTORE_RELEASE_GUIDE.md`](./ONESTORE_RELEASE_GUIDE.md) — 서명 APK 준비 완료 · 가입/등록/심사는 사용자 · 자산·문구 초안이 다음 작업
+
 ---
 
 ## 1. 한 줄 상태

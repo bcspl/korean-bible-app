@@ -5,6 +5,22 @@
 
 ---
 
+## 2026-10-03 — 원스토어(ONE store) 출시 조사 · 서명 APK 재빌드 · 가이드
+
+### 한 일
+- 원스토어 공식 개발자 문서(GitBook)·공지 조사 → `ONESTORE_RELEASE_GUIDE.md` (단계별 담당 👤/🤖 · 추정 소요시간 · 자산 규격 · 체크리스트 · 출처)
+- `flutter build apk --release` 재빌드 → `build\app\outputs\flutter-apk\app-release.apk` 60,871,249 B · 업로드 키 서명(v2) SHA-256 일치 · com.lsh.koreanbible vc1 · min 24 / target 36
+- Google Play 전용 의존성·타 마켓 링크 없음 확인 (원스토어 SDK 불필요: 무료·IAP 없음)
+
+### 막힌 일 / 리스크
+- 원스토어 가입·등록·심사 요청은 사용자 몫 (에이전트 미실행)
+- Play 미출시 패키지 → 원스토어 설치 시 Play 프로텍트 차단 가능성
+- 결정 필요: 서명 방식("앱 서명 사용 안함" 권장) · 패키지명 동일 여부 · Play 앱 서명 키를 PEPK로 맞출지
+
+### 다음 1건
+- 원스토어 자산(아이콘 512 · 그래픽 1024×578 · 스크린샷 720×1280) + 문구 초안
+
+---
 ## 2026-09-29 — GitHub push · 개인정보처리방침 초안 · Android 출시 정본 + PPTX
 
 ### 한 일
