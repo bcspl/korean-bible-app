@@ -12,6 +12,16 @@
 
 ---
 
+## 0. 지켜볼 항목 (Watch items)
+
+| 항목 | 기한/트리거 | 문서 |
+|------|-------------|------|
+| 원스토어 심사 결과 (2026-10-03 제출, vc1) | 최대 5영업일 → ~10/12 | [`ONESTORE_RELEASE_GUIDE.md`](./ONESTORE_RELEASE_GUIDE.md) |
+| Android 개발자 인증 (한국 2027 · 날짜 미정) | Play 계정 생성 시 함께 · 늦어도 2026-11-30 결정 / 2026-12-31 완료 · Google 한국 날짜 발표 시 2주 내 | [`ANDROID_DEVELOPER_VERIFICATION.md`](./ANDROID_DEVELOPER_VERIFICATION.md) |
+| 원스토어 공지 (개발자 인증·targetSdk) | 수시 | dev.onestore.net 공지 |
+
+---
+
 ## 1. 한 줄 상태
 
 | 영역 | % | 메모 |

@@ -1,7 +1,7 @@
 # 원스토어(ONE store) 출시 가이드 — 한국어 성경
 
 **작성일:** 2026-10-03 (KST) · **대상:** `com.lsh.koreanbible` 1.0.0 (versionCode 1) · 무료 · 인앱결제/광고 없음  
-**관련 문서:** [`ANDROID_RELEASE_PROCESS.md`](./ANDROID_RELEASE_PROCESS.md) (Google Play 정본) · [`RESUME_HERE.md`](./RESUME_HERE.md) · [`../privacy/privacy-policy.md`](../privacy/privacy-policy.md) · [`../privacy/README.md`](../privacy/README.md)
+**관련 문서:** [`ANDROID_RELEASE_PROCESS.md`](./ANDROID_RELEASE_PROCESS.md) (Google Play 정본) · [`RESUME_HERE.md`](./RESUME_HERE.md) · [`../privacy/privacy-policy.md`](../privacy/privacy-policy.md) · [`../privacy/README.md`](../privacy/README.md) · [`ANDROID_DEVELOPER_VERIFICATION.md`](./ANDROID_DEVELOPER_VERIFICATION.md)
 
 > **범례**
 > - 👤 **사용자(브라우저)**: 원스토어 개발자센터 / ONEconsole에서 본인이 직접 해야 하는 일 (로그인·본인정보·약관 동의·업로드·심사 요청)
@@ -106,6 +106,7 @@
 - 대응: (a) Google Play 출시를 먼저 하거나 동시에 진행, (b) 원스토어 출시 후 실기기에서 설치 테스트, (c) 차단되면 Google에 소명. ⚠ 공식 페이지의 소명 링크가 문서에 비어 있어 정확한 URL을 확인하지 못했습니다.
 
 #### 참고: Google 안드로이드 개발자 인증
+- 👉 상세 대비 계획: [`ANDROID_DEVELOPER_VERIFICATION.md`](./ANDROID_DEVELOPER_VERIFICATION.md) (2026-10-03)
 - 2026-09-30부터는 브라질·인도네시아·싱가포르·태국에서만 시행되고, 전 세계 확대는 2027년 예정(날짜 미정)입니다. **한국 배포는 현재 영향 없음.**
 - 대비책으로 `com.lsh.koreanbible`을 Play Console 또는 Android Developer Console에 서명 APK와 함께 등록해 두면 좋습니다.
 - 원스토어는 `assets/adi-registration.properties`가 없으면 안내 팝업만 띄우며, 심사와는 무관합니다.

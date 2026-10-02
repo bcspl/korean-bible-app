@@ -3,7 +3,7 @@
 **작성일:** 2026-09-29  
 **목표:** 2026-11 Google Play 1.0 공개  
 **앱:** 한국어 성경 · `com.lsh.koreanbible` · Flutter  
-**관련 문서:** [`PLAYSTORE_RELEASE_GUIDE_2026-08-10.md`](./PLAYSTORE_RELEASE_GUIDE_2026-08-10.md) (요약 가이드) · [`RELEASE_CHECKLIST_PLAYSTORE.md`](./RELEASE_CHECKLIST_PLAYSTORE.md) (R1–R25) · [`RESUME_HERE.md`](./RESUME_HERE.md) (재개 지점) · [`../privacy/privacy-policy.md`](../privacy/privacy-policy.md) (개인정보처리방침 초안)  
+**관련 문서:** [`PLAYSTORE_RELEASE_GUIDE_2026-08-10.md`](./PLAYSTORE_RELEASE_GUIDE_2026-08-10.md) (요약 가이드) · [`RELEASE_CHECKLIST_PLAYSTORE.md`](./RELEASE_CHECKLIST_PLAYSTORE.md) (R1–R25) · [`RESUME_HERE.md`](./RESUME_HERE.md) (재개 지점) · [`../privacy/privacy-policy.md`](../privacy/privacy-policy.md) (개인정보처리방침 초안) · [`ANDROID_DEVELOPER_VERIFICATION.md`](./ANDROID_DEVELOPER_VERIFICATION.md) (Android 개발자 인증 · 2027 한국 · Play Console 경로 권장) · [`ONESTORE_RELEASE_GUIDE.md`](./ONESTORE_RELEASE_GUIDE.md)  
 **PPTX:** `docs/roadmap-pptx/KoreanBible_Android_Release_Process_2026-09-29.pptx`
 
 > 이 문서는 Phase 0–8 전 과정을 **실행 가능한 수준**으로 정리한 “정본(master)” 가이드입니다.  

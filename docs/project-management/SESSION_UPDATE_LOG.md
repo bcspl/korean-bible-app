@@ -5,6 +5,23 @@
 
 ---
 
+## 2026-10-03 (4) — Android 개발자 인증 대비 문서
+
+### 한 일
+- 원스토어 심사 제출됨 (사용자, com.lsh.koreanbible vc1)
+- Google 공식 문서·원스토어 FAQ 조사 → `ANDROID_DEVELOPER_VERIFICATION.md` (경로 A Play Console / B ADC , 일정, 키·스니펫 절차, 체크리스트, 실행 시점)
+- 공개 인증서 PEM 생성: `C:\Users\LSH\secure\korean-bible-upload-cert.pem` (apksigner로 APK에서 추출, SHA-256 일치, 저장소 밖)
+- RESUME_HERE에 'Watch items' 섹션 · ANDROID_RELEASE_PROCESS · ONESTORE 가이드에 링크
+
+### 리스크 / 미정
+- 한국 시행일 미발표 (2027) · 한국 신원 서류 목록 미공개
+- 원스토어 제출 시 서명 옵션 확인 필요 (원스토어 서명 키면 소유권 증명 절차가 다름)
+
+### 다음 1건
+- 원스토어 심사 결과 대응 · 2026-11-30까지 인증 경로 결정
+
+---
+
 ## 2026-10-03 (3) — 배너 확정 · 원스토어 출시 PPTX
 
 ### 한 일
