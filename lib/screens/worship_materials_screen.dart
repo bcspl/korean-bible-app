@@ -17,6 +17,7 @@ class WorshipMaterialsScreen extends StatelessWidget {
         child: Semantics(
           label: '예배 자료 목록',
           child: ListView(
+            padding: EdgeInsets.only(bottom: 8 + MediaQuery.viewPaddingOf(context).bottom),
             children: [
               Semantics(
                 button: true,

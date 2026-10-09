@@ -61,7 +61,7 @@ class _HymnDetailScreenState extends State<HymnDetailScreen> {
         ],
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(pad),
+        padding: EdgeInsets.fromLTRB(pad, pad, pad, pad + MediaQuery.viewPaddingOf(context).bottom),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

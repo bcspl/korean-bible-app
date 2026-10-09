@@ -1,6 +1,6 @@
 # RESUME HERE — 다음 세션 시작점
 
-**체크포인트:** 2026-09-29  
+**체크포인트:** 2026-10-10  
 **작업 방식:** Play Store Phase 0→8 가이드 + Sprint A→D 우선순위 (Linear PPTX에 문서화됨)  
 **목표:** 2026-11 Google Play 1.0 공개
 
@@ -9,6 +9,8 @@
 > 전체 절차 정본: [`ANDROID_RELEASE_PROCESS.md`](./ANDROID_RELEASE_PROCESS.md) · PPTX `docs/roadmap-pptx/KoreanBible_Android_Release_Process_2026-09-29.pptx`
 
 > **원스토어(2026-10-03):** [`ONESTORE_RELEASE_GUIDE.md`](./ONESTORE_RELEASE_GUIDE.md) — 서명 APK 준비 완료 · 가입/등록/심사는 사용자 · 자산·문구 초안이 다음 작업
+
+> **2026-10-10:** 1.0.1+2 — Android 하단 내비게이션 바 가림 수정. 서명 APK `Desktop\Bible Project\korean-bible-1.0.1.apk` 준비 · 실기기 확인 후 원스토어 업데이트 제출이 다음 작업
 
 ---
 

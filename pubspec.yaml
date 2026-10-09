@@ -1,7 +1,7 @@
 name: korean_bible_app
 description: "완전 무료 오프라인 한국어 성경 앱 - Public Domain 데이터"
 publish_to: 'none'
-version: 1.0.0+1   # 버전 관리 (업데이트 시 올리기)
+version: 1.0.1+2   # 버전 관리 (업데이트 시 올리기)
 
 environment:
   sdk: '>=3.0.0 <4.0.0'   # Flutter SDK 버전에 맞춤

@@ -35,6 +35,7 @@ class BookmarkListScreen extends StatelessWidget {
                 ),
               )
             : ListView(
+                padding: EdgeInsets.only(bottom: 8 + MediaQuery.viewPaddingOf(context).bottom),
                 children: [
                   if (bookmarks.isNotEmpty) ...[
                     _SectionHeader(

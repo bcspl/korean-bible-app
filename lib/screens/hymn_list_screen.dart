@@ -168,6 +168,7 @@ class _HymnListScreenState extends State<HymnListScreen> {
                             ),
                           )
                         : ListView.builder(
+                            padding: EdgeInsets.only(bottom: 8 + MediaQuery.viewPaddingOf(context).bottom),
                             itemCount: hymns.length,
                             itemBuilder: (context, i) {
                               final h = hymns[i];

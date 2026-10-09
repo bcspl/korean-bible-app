@@ -5,6 +5,22 @@
 
 ---
 
+## 2026-10-10 — Android 하단 잘림 수정 · 1.0.1+2
+
+### 한 일
+- 원인: targetSdk 36 edge-to-edge 강제 + 하단 inset 처리 없음 → 내비게이션 바가 마지막 절을 가림
+- 수정: 12개 화면 스크롤 본문 하단 패딩 += `MediaQuery.viewPaddingOf(context).bottom` (edge-to-edge 유지, targetSdk 유지). 본문 뷰어는 FAB용 +72
+- pubspec 1.0.0+1 → 1.0.1+2 · `flutter analyze` 신규 이슈 없음 (18 info, 기존)
+- 서명 APK: `Desktop\Bible Project\korean-bible-1.0.1.apk` (60,936,785 B) · cert SHA-256 41:9D:…:33:87 일치 · com.lsh.koreanbible vc2 / 1.0.1
+
+### 리스크 / 미정
+- 실기기/에뮬레이터 미연결 → 화면 확인 안 됨
+
+### 다음 1건
+- 실기기에서 긴 장(시 119) 마지막 절 확인 후 원스토어에 1.0.1 업데이트 제출
+
+---
+
 ## 2026-10-03 (4) — Android 개발자 인증 대비 문서
 
 ### 한 일

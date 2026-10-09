@@ -10,10 +10,11 @@ class AboutScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('이 성경앱에 대해서')),
       body: Padding(
-        padding: EdgeInsets.all(pad),
+        padding: EdgeInsets.fromLTRB(pad, pad, pad, 0),
         child: Semantics(
           label: '이 성경앱에 대해서 안내',
           child: SingleChildScrollView(
+          padding: EdgeInsets.only(bottom: pad + MediaQuery.viewPaddingOf(context).bottom),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

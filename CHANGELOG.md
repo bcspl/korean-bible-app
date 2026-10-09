@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.1+2 — 2026-10-10
+
+### Fixed (Android)
+- 화면 하단이 시스템 내비게이션/제스처 바에 가려 마지막 절이 안 보이던 문제 (targetSdk 36 edge-to-edge 강제). edge-to-edge 유지, 각 스크롤 본문 하단 패딩에 `MediaQuery.viewPaddingOf(context).bottom` 추가 (성경 본문·장/책 목록·찬송가 상세/목록·사도신경·주기도문·교독문·예배자료·북마크·설정·앱 정보). 본문 화면은 FAB 높이만큼 추가 여유. MainScreen 탭 안에서는 BottomNavigationBar가 inset을 제거하므로 이중 패딩 없음.
+- versionCode 1 → 2 (원스토어 업데이트)
+
 ## Unreleased
 
 ### Docs (2026-08-10)

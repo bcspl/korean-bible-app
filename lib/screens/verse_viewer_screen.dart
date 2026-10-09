@@ -201,8 +201,8 @@ class _VerseViewerScreenState extends State<VerseViewerScreen> {
                     width > 900 ? 32.0 : (width > 600 ? 24.0 : 12.0);
                 return ListView.builder(
                   controller: _scrollController,
-                  padding: EdgeInsets.symmetric(
-                      horizontal: horizontalPad, vertical: 12),
+                  padding: EdgeInsets.fromLTRB(horizontalPad, 12, horizontalPad,
+                      12 + 72 + MediaQuery.viewPaddingOf(context).bottom),
                   itemCount: orderedNums.length,
                   itemBuilder: (context, index) {
                     final vNum = orderedNums[index];

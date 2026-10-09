@@ -45,8 +45,9 @@ class _LordsPrayerScreenState extends State<LordsPrayerScreen> {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(pad),
+        padding: EdgeInsets.fromLTRB(pad, pad, pad, 0),
         child: SingleChildScrollView(
+          padding: EdgeInsets.only(bottom: pad + MediaQuery.viewPaddingOf(context).bottom),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

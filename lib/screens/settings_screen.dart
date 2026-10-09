@@ -14,7 +14,7 @@ class SettingsScreen extends StatelessWidget {
           final width = MediaQuery.of(context).size.width;
           final horizontalPad = width > 900 ? 32.0 : (width > 600 ? 24.0 : 16.0);
           return ListView(
-            padding: EdgeInsets.symmetric(horizontal: horizontalPad),
+            padding: EdgeInsets.fromLTRB(horizontalPad, 0, horizontalPad, 8 + MediaQuery.viewPaddingOf(context).bottom),
             children: [
               ListTile(
                 leading: const Icon(Icons.text_fields),

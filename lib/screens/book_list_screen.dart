@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/bible_version.dart';
 import '../providers/bible_provider.dart';
@@ -252,7 +252,7 @@ class _BookListScreenState extends State<BookListScreen> {
           // List of books - full scrollable
           Expanded(
             child: ListView.separated(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: EdgeInsets.fromLTRB(16, 8, 16, 8 + MediaQuery.viewPaddingOf(context).bottom),
               itemCount: filteredBooks.length,
               separatorBuilder: (_, __) => const Divider(height: 1),
               itemBuilder: (context, index) {

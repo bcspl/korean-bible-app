@@ -178,8 +178,7 @@ class _ResponsiveReadingScreenState extends State<ResponsiveReadingScreen> {
                       ),
                     Expanded(
                       child: ListView.builder(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: pad, vertical: 4),
+                        padding: EdgeInsets.fromLTRB(pad, 4, pad, 4 + MediaQuery.viewPaddingOf(context).bottom),
                         itemCount: filtered.length,
                         itemBuilder: (context, i) {
                           final r = filtered[i];
@@ -360,7 +359,7 @@ class _ReadingDetailState extends State<_ReadingDetail> {
             child: lines.isEmpty
                 ? const Center(child: Text('해당 역본 본문을 찾을 수 없습니다.'))
                 : ListView.builder(
-                    padding: EdgeInsets.all(pad),
+                    padding: EdgeInsets.fromLTRB(pad, pad, pad, pad + MediaQuery.viewPaddingOf(context).bottom),
                     itemCount: lines.length,
                     itemBuilder: (c, i) {
                       final line = lines[i];
