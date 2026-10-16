@@ -5,6 +5,25 @@
 
 ---
 
+## 2026-10-16 — 설정 > '버전 정보 및 업데이트' 화면
+
+### 한 일
+- 설정 화면 하드코딩 '버전: 1.0.0' 항목 → '버전 정보 및 업데이트' 메뉴로 교체 (`lib/screens/version_info_screen.dart`)
+- 현재 버전: `package_info_plus` 런타임 조회 · 이 기기 적용일: `PackageInfo.updateTime` (없으면 버전별 첫 실행일 SharedPreferences 기록)
+- 최신 버전: `app_version.json` (repo 루트, raw.githubusercontent.com main) 을 8초 타임아웃으로 조회 → versionCode 비교. 실패 시 '업데이트 확인 실패(네트워크 연결 확인)', 앱 차단 없음
+- 원스토어 이동: `url_launcher` · `onestore://common/product/<PID>` → 웹 상세 → 원스토어 검색 순 (`lib/services/update_service.dart`)
+- Manifest: INTERNET 권한 + VIEW(https/onestore) queries 추가
+- analyze 18 info(기존, 신규 0) · 테스트 5개 통과 · release APK 빌드 + apksigner 검증 OK (vc2/1.0.1, 버전 미변경)
+
+### 리스크 / 미정
+- **원스토어 PID 미확인** → `kOneStoreProductId` 상수 TODO (현재 검색 URL로 이동)
+- 커밋 미푸시 → 푸시 전에는 app_version.json URL이 404 → '확인 실패' 표시
+- INTERNET 권한 추가 → 원스토어 수집정보/개인정보처리방침 문구 확인 필요 (수집 데이터 없음)
+
+### 다음 1건
+- PID 입력 → 1.0.2+3 버전업 → 실기기 확인 → 푸시 후 원스토어 업데이트 제출 (출시 후 app_version.json 갱신)
+
+---
 ## 2026-10-10 — Android 하단 잘림 수정 · 1.0.1+2
 
 ### 한 일

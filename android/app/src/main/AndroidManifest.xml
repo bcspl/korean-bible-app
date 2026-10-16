@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 버전 정보 화면: 최신 버전 JSON 확인 (실패 시 오프라인 동작 유지) -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="한국어 성경"
         android:name="${applicationName}"
@@ -40,6 +42,15 @@
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>
+        </intent>
+        <!-- 원스토어 업데이트 페이지 열기 (url_launcher) -->
+        <intent>
+            <action android:name="android.intent.action.VIEW"/>
+            <data android:scheme="https"/>
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW"/>
+            <data android:scheme="onestore"/>
         </intent>
     </queries>
 </manifest>

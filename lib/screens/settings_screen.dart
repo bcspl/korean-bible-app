@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/theme_provider.dart';
+import 'version_info_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -70,8 +71,14 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ),
               const Divider(),
-              const ListTile(
-                title: Text('버전: 1.0.0 (개역한글 / KRV)'),
+              ListTile(
+                leading: const Icon(Icons.system_update),
+                title: const Text('버전 정보 및 업데이트'),
+                subtitle: const Text('현재 버전 확인 · 원스토어 업데이트'),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const VersionInfoScreen()),
+                ),
               ),
               const ListTile(
                 title: Text('데이터 출처: Public Domain'),

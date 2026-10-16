@@ -9,9 +9,12 @@ import 'models/bible_verse.dart';
 import 'providers/bible_provider.dart';
 import 'providers/theme_provider.dart';
 import 'screens/main_screen.dart';
+import 'services/update_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // 버전별 첫 실행일 기록 (비동기, 실패 무시 · 앱 시작 차단 안 함)
+  UpdateService.recordFirstLaunchOfCurrentVersion();
   await Hive.initFlutter();
 
   // Register Hive adapters for Bible data models
