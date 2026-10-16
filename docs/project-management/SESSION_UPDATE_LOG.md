@@ -5,6 +5,18 @@
 
 ---
 
+## 2026-10-17 — 원스토어 PID 반영 (0001009901)
+
+### 한 일
+- `kOneStoreProductId = '0001009901'` (TODO 제거) · `lib/services/update_service.dart`
+- 웹 상세 확인: `https://m.onestore.co.kr/ko-kr/apps/appsDetail.omp?prodId=0001009901` → '한국어 성경 - 개역한글·찬송가·교독문' (bcspl7, 3+) 정상 노출
+- 앱 링크 `onestore://common/product/0001009901` — 원스토어 연동규격 가이드 형식과 일치 (실기기 미확인)
+- analyze/test 재실행 · 버전 미변경 · 미푸시
+
+### 다음 1건
+- 실기기에서 '원스토어에서 업데이트' 버튼 동작 확인 → 1.0.2+3 버전업 → 푸시/제출
+
+---
 ## 2026-10-16 — 설정 > '버전 정보 및 업데이트' 화면
 
 ### 한 일

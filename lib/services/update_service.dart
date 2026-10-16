@@ -6,10 +6,10 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-/// 원스토어 상품 ID (PID).
-/// TODO(onestore): 원스토어 개발자센터 > 앱 > 상품 정보에서 PID(예: 0000XXXXXX)를 확인해 입력하세요.
-/// 비어 있으면 원스토어 검색 페이지로 이동합니다.
-const String kOneStoreProductId = '';
+/// 원스토어 상품 ID (PID) — 한국어 성경 (com.lsh.koreanbible).
+/// 앱 링크: onestore://common/product/{PID} (원스토어 연동규격 가이드)
+/// 웹: https://m.onestore.co.kr/ko-kr/apps/appsDetail.omp?prodId={PID}
+const String kOneStoreProductId = '0001009901';
 
 /// 최신 버전 정보 JSON (GitHub main 브랜치).
 const String kVersionJsonUrl =
