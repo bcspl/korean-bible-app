@@ -1,6 +1,6 @@
 {
-  "versionName": "1.0.1",
-  "versionCode": 2,
-  "releaseDate": "2026-10-10",
-  "notes": "Android 하단 내비게이션 바 가림 수정"
+  "versionName": "1.0.2",
+  "versionCode": 3,
+  "releaseDate": "2026-10-17",
+  "notes": "버전 정보 및 업데이트 메뉴 추가, 현재 버전 표시"
 }

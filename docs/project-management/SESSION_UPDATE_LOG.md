@@ -5,6 +5,22 @@
 
 ---
 
+## 2026-10-17 (2) — 1.0.2+3 빌드 · 푸시
+
+### 한 일
+- pubspec 1.0.1+2 → 1.0.2+3 · app_version.json → 1.0.2 / vc3 / 2026-10-17
+- analyze 18 info(기존) · 테스트 5개 통과 · 서명 APK `Desktop\Bible Project\korean-bible-1.0.2.apk` (61,894,019 B) · apksigner v2 OK · cert SHA-256 41:9D:…:33:87 일치 · com.lsh.koreanbible vc3 / 1.0.2
+- main 푸시 (app_version.json 공개)
+
+### 리스크 / 미정
+- app_version.json 이 원스토어 승인 전 1.0.2 를 표시 (1.0.1 에는 업데이트 화면이 없어 영향 없음)
+- 실기기 미확인
+
+### 다음 1건
+- 실기기 확인 → 원스토어에 1.0.2 업데이트 제출
+
+---
+
 ## 2026-10-17 — 원스토어 PID 반영 (0001009901)
 
 ### 한 일
