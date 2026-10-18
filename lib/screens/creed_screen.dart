@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/last_position_service.dart';
 import '../data/worship_texts.dart';
 import '../models/bible_version.dart';
 
@@ -11,6 +12,12 @@ class CreedScreen extends StatefulWidget {
 }
 
 class _CreedScreenState extends State<CreedScreen> {
+  @override
+  void initState() {
+    super.initState();
+    LastPositionService.saveWorship(const WorshipPosition('creed'));
+  }
+
   BibleVersionId _lang = BibleVersionId.krv;
 
   @override

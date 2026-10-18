@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:korean_bible_app/main.dart';
 import 'package:korean_bible_app/models/bible_book.dart';
@@ -19,8 +20,13 @@ import 'package:korean_bible_app/models/bible_chapter.dart';
 import 'package:korean_bible_app/models/bible_verse.dart';
 import 'package:korean_bible_app/providers/bible_provider.dart';
 import 'package:korean_bible_app/providers/theme_provider.dart';
+import 'package:korean_bible_app/services/last_position_service.dart';
 
 void main() {
+  setUp(() {
+    SharedPreferences.setMockInitialValues({});
+    LastPositionService.resetForTest();
+  });
   setUpAll(() async {
     var tempDir = await Directory.systemTemp.createTemp();
     Hive.init(tempDir.path);

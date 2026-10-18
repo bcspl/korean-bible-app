@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/bible_bookmark.dart';
 import '../models/bible_version.dart';
 import '../providers/bible_provider.dart';
 import '../providers/theme_provider.dart';
+import '../services/last_position_service.dart';
 import '../widgets/bible_version_selector.dart';
 
 class VerseViewerScreen extends StatefulWidget {
@@ -11,11 +14,15 @@ class VerseViewerScreen extends StatefulWidget {
   final int chapterIndex;
   final int? initialVerseIndex;
 
+  /// 이어 읽기: 마지막 스크롤 위치 (px).
+  final double? initialScrollOffset;
+
   const VerseViewerScreen({
     super.key,
     required this.bookIndex,
     required this.chapterIndex,
     this.initialVerseIndex,
+    this.initialScrollOffset,
   });
 
   @override
@@ -24,11 +31,14 @@ class VerseViewerScreen extends StatefulWidget {
 
 class _VerseViewerScreenState extends State<VerseViewerScreen> {
   late ScrollController _scrollController;
+  Timer? _saveDebounce;
 
   @override
   void initState() {
     super.initState();
     _scrollController = ScrollController();
+    _scrollController.addListener(_onScroll);
+    _savePosition(widget.initialScrollOffset ?? 0);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.initialVerseIndex != null) {
         final targetIndex = widget.initialVerseIndex! - 1;
@@ -39,12 +49,50 @@ class _VerseViewerScreenState extends State<VerseViewerScreen> {
             curve: Curves.easeOut,
           );
         }
+      } else if ((widget.initialScrollOffset ?? 0) > 0) {
+        _restoreOffset(widget.initialScrollOffset!, 0);
       }
     });
   }
 
+  /// 지연 생성 리스트라 최대 범위가 점차 늘어나므로 몇 프레임에 걸쳐 복원.
+  void _restoreOffset(double target, int attempt) {
+    if (!mounted || !_scrollController.hasClients) return;
+    final pos = _scrollController.position;
+    final to = target.clamp(0.0, pos.maxScrollExtent);
+    _scrollController.jumpTo(to);
+    if (to < target && attempt < 8) {
+      WidgetsBinding.instance
+          .addPostFrameCallback((_) => _restoreOffset(target, attempt + 1));
+      WidgetsBinding.instance.scheduleFrame();
+    }
+  }
+
+  void _onScroll() {
+    _saveDebounce?.cancel();
+    _saveDebounce = Timer(const Duration(milliseconds: 600), () {
+      if (mounted && _scrollController.hasClients) {
+        _savePosition(_scrollController.offset);
+      }
+    });
+  }
+
+  void _savePosition(double offset) {
+    LastPositionService.saveBible(
+        BiblePosition(widget.bookIndex, widget.chapterIndex, offset));
+  }
+
   @override
   void dispose() {
+    _saveDebounce?.cancel();
+    // 다음/이전 장으로 교체된 경우 새 화면의 위치를 덮어쓰지 않도록 같은 장일 때만 저장
+    final last = LastPositionService.bible;
+    if (_scrollController.hasClients &&
+        last != null &&
+        last.bookIndex == widget.bookIndex &&
+        last.chapterIndex == widget.chapterIndex) {
+      _savePosition(_scrollController.offset);
+    }
     _scrollController.dispose();
     super.dispose();
   }

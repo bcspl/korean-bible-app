@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/last_position_service.dart';
 import '../data/worship_texts.dart';
 import '../models/bible_version.dart';
 
@@ -11,6 +12,12 @@ class LordsPrayerScreen extends StatefulWidget {
 }
 
 class _LordsPrayerScreenState extends State<LordsPrayerScreen> {
+  @override
+  void initState() {
+    super.initState();
+    LastPositionService.saveWorship(const WorshipPosition('prayer'));
+  }
+
   BibleVersionId _lang = BibleVersionId.krv;
 
   @override

@@ -3,11 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/bible_book.dart';
 import '../models/bible_bookmark.dart';
 import '../models/bible_version.dart';
 import '../models/hymn.dart';
 import '../services/bible_data_service.dart';
+import '../services/bible_search.dart';
 
 // Full Bible book names mapping (key from JSON -> Korean, English full)
 const Map<String, Map<String, String>> _bibleBookNames = {
@@ -104,11 +106,38 @@ class BibleProvider with ChangeNotifier {
   bool _hasError = false;
   String _errorMessage = '';
 
+  /// SharedPreferences key for the user's explicit translation choice.
+  static const String activeVersionsPrefsKey = 'active_versions';
+
   /// Active Bible versions for parallel reading (1–3). Order = display order.
-  List<BibleVersionId> _activeVersions = [
-    BibleVersionId.krv,
-    BibleVersionId.kjv,
-  ];
+  /// 기본값: 개역한글(KRV)만. 사용자가 직접 선택한 경우에만 저장·복원.
+  List<BibleVersionId> _activeVersions = [BibleVersionId.krv];
+
+  /// 저장된 역본 코드 목록 → 활성 역본. 저장값이 없거나 잘못되면 KRV만.
+  static List<BibleVersionId> resolveInitialVersions(List<String>? saved) {
+    final out = <BibleVersionId>[];
+    for (final code in saved ?? const <String>[]) {
+      final v = BibleVersionIdX.fromCode(code);
+      if (v != null && !out.contains(v)) out.add(v);
+      if (out.length >= 3) break;
+    }
+    return out.isEmpty ? [BibleVersionId.krv] : out;
+  }
+
+  Future<void> _loadVersionPrefs() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      _activeVersions =
+          resolveInitialVersions(prefs.getStringList(activeVersionsPrefsKey));
+    } catch (_) {}
+  }
+
+  void _saveVersionPrefs() {
+    final codes = _activeVersions.map((v) => v.code).toList();
+    SharedPreferences.getInstance()
+        .then((p) => p.setStringList(activeVersionsPrefsKey, codes))
+        .catchError((_) => false);
+  }
 
   List<BibleBook> get books => _books;
   bool get isLoading => _isLoading;
@@ -153,6 +182,7 @@ class BibleProvider with ChangeNotifier {
       if (_activeVersions.length <= 1) return;
       _activeVersions = _activeVersions.where((v) => v != id).toList();
     }
+    _saveVersionPrefs();
     notifyListeners();
   }
 
@@ -164,6 +194,7 @@ class BibleProvider with ChangeNotifier {
     }
     if (unique.isEmpty) unique.add(BibleVersionId.krv);
     _activeVersions = unique;
+    _saveVersionPrefs();
     notifyListeners();
   }
 
@@ -193,6 +224,7 @@ class BibleProvider with ChangeNotifier {
     _isLoading = true;
     _hasError = false;
     notifyListeners();
+    await _loadVersionPrefs();
     try {
       await _service.loadAllVersions();
       _books = await _service.getBooks();
@@ -379,54 +411,120 @@ class BibleProvider with ChangeNotifier {
     return _books[index].book;
   }
 
-  List<VerseMatch> searchVerses(String query) {
-    if (query.trim().isEmpty) return [];
-    final q = query.toLowerCase().trim();
-    final results = <VerseMatch>[];
-    final searchVersions = _activeVersions.isEmpty
-        ? [BibleVersionId.krv]
-        : _activeVersions;
+  /// 책 키 → books 인덱스.
+  int indexOfBookKey(String key) => _books.indexWhere((b) => b.book == key);
 
-    for (int bi = 0; bi < _books.length; bi++) {
-      final book = _books[bi];
-      final key = book.book;
-      final disp = getBookDisplayNameForIndex(bi).toLowerCase();
-      final en = getBookEnglishName(key).toLowerCase();
-      final ko = getBookKoreanName(key).toLowerCase();
-      for (int ci = 0; ci < book.chapters.length; ci++) {
-        final chapter = book.chapters[ci];
-        final chNum = chapter.chapter;
-        // Use KRV verse list as navigation backbone
-        for (int vi = 0; vi < chapter.verses.length; vi++) {
-          final verse = chapter.verses[vi];
-          final vNum = verse.verse;
-          var hit = disp.contains(q) || en.contains(q) || ko.contains(q);
-          String snippet = '$chNum:$vNum ${verse.text}';
-          if (!hit) {
-            for (final ver in searchVersions) {
-              final t = verseTextFor(ver, key, chNum, vNum) ?? '';
-              if (t.toLowerCase().contains(q)) {
-                hit = true;
-                snippet = '$chNum:$vNum [${ver.code}] $t';
-                break;
-              }
-            }
-          }
-          if (hit) {
-            results.add(VerseMatch(
-              bi,
-              ci,
-              vi,
-              getBookDisplayNameForIndex(bi),
-              snippet,
-            ));
-            if (results.length >= 50) return results;
+  /// 통합 검색: 성경책 → 구절 바로가기 → 본문 검색 (책별 묶음·개수).
+  BibleSearchResults search(
+    String query, {
+    int maxTextResults = 200,
+    bool Function(int bookIndex)? bookFilter,
+  }) {
+    final q = query.trim();
+    if (q.isEmpty || _books.isEmpty) return BibleSearchResults.empty;
+
+    final books = <int>[];
+    for (final m in matchBooks(q)) {
+      final bi = indexOfBookKey(m.book.key);
+      if (bi >= 0) books.add(bi);
+    }
+
+    final refs = <VerseMatch>[];
+    final ref = parseReference(q);
+    if (ref != null) {
+      final bi = indexOfBookKey(ref.book.key);
+      if (bi >= 0) {
+        final book = _books[bi];
+        final ci = ref.chapter - 1;
+        if (ci < book.chapters.length) {
+          final ch = book.chapters[ci];
+          final verseCount = ch.verses.length;
+          if (ref.verse == null) {
+            refs.add(VerseMatch(bi, ci, -1, getBookKoreanName(book.book),
+                '${ch.chapter}장 ($verseCount절)'));
+          } else if (ref.verse! <= verseCount) {
+            final vi = ref.verse! - 1;
+            final v = ch.verses[vi];
+            refs.add(VerseMatch(bi, ci, vi, getBookKoreanName(book.book),
+                '${ch.chapter}:${v.verse} ${v.text}'));
+          } else {
+            refs.add(VerseMatch(bi, ci, -1, getBookKoreanName(book.book),
+                '${ch.chapter}장 (${ref.verse}절 없음 · 장 열기)'));
           }
         }
       }
     }
-    return results;
+
+    final text = <VerseMatch>[];
+    final countsByBook = <int, int>{};
+    var total = 0;
+    final needle = q.toLowerCase();
+    final versions =
+        _activeVersions.isEmpty ? [BibleVersionId.krv] : _activeVersions;
+    for (int bi = 0; bi < _books.length; bi++) {
+      if (bookFilter != null && !bookFilter(bi)) continue;
+      final book = _books[bi];
+      final key = book.book;
+      for (int ci = 0; ci < book.chapters.length; ci++) {
+        final chapter = book.chapters[ci];
+        final chNum = chapter.chapter;
+        for (int vi = 0; vi < chapter.verses.length; vi++) {
+          final vNum = chapter.verses[vi].verse;
+          for (final ver in versions) {
+            final t = ver == BibleVersionId.krv
+                ? chapter.verses[vi].text
+                : (verseTextFor(ver, key, chNum, vNum) ?? '');
+            final hit = ver.isKorean
+                ? t.contains(needle)
+                : t.toLowerCase().contains(needle);
+            if (hit) {
+              total++;
+              countsByBook[bi] = (countsByBook[bi] ?? 0) + 1;
+              if (text.length < maxTextResults) {
+                final tag = versions.length > 1 ? '[${ver.code}] ' : '';
+                text.add(VerseMatch(bi, ci, vi, getBookKoreanName(key),
+                    '$chNum:$vNum $tag$t'));
+              }
+              break;
+            }
+          }
+        }
+      }
+    }
+    return BibleSearchResults(
+      books: books,
+      references: refs,
+      textMatches: text,
+      textTotal: total,
+      textCountsByBook: countsByBook,
+    );
   }
+}
+
+class BibleSearchResults {
+  final List<int> books; // book indexes, ranked
+  final List<VerseMatch> references;
+  final List<VerseMatch> textMatches; // capped, canonical order
+  final int textTotal;
+  final Map<int, int> textCountsByBook;
+
+  const BibleSearchResults({
+    required this.books,
+    required this.references,
+    required this.textMatches,
+    required this.textTotal,
+    required this.textCountsByBook,
+  });
+
+  static const empty = BibleSearchResults(
+    books: [],
+    references: [],
+    textMatches: [],
+    textTotal: 0,
+    textCountsByBook: {},
+  );
+
+  bool get isEmpty => books.isEmpty && references.isEmpty && textTotal == 0;
 }
 
 class VerseMatch {

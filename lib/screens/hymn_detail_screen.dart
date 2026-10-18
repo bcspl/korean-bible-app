@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import '../models/hymn.dart';
 import '../providers/bible_provider.dart';
+import '../services/last_position_service.dart';
 
 class HymnDetailScreen extends StatefulWidget {
   final Hymn hymn;
@@ -22,6 +23,7 @@ class _HymnDetailScreenState extends State<HymnDetailScreen> {
   @override
   void initState() {
     super.initState();
+    LastPositionService.saveHymn(hymn.id);
     // Prefer Korean when available; otherwise English
     if (!hymn.hasKoreanLyrics && hymn.hasEnglishLyrics) {
       _lyricsLang = 1;

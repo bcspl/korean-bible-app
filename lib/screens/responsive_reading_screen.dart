@@ -6,10 +6,14 @@ import 'package:provider/provider.dart';
 import '../models/bible_version.dart';
 import '../providers/bible_provider.dart';
 import '../widgets/bible_version_selector.dart';
+import '../services/last_position_service.dart';
 
 /// 교독문 — KRV/KJV/ASV scripture passages as leader/congregation readings.
 class ResponsiveReadingScreen extends StatefulWidget {
-  const ResponsiveReadingScreen({super.key});
+  /// 이어보기: 열 교독문 번호 (목록 로드 후 자동으로 엶).
+  final int? initialReadingNumber;
+
+  const ResponsiveReadingScreen({super.key, this.initialReadingNumber});
 
   @override
   State<ResponsiveReadingScreen> createState() =>
@@ -28,7 +32,22 @@ class _ResponsiveReadingScreenState extends State<ResponsiveReadingScreen> {
   @override
   void initState() {
     super.initState();
+    if (widget.initialReadingNumber == null) {
+      LastPositionService.saveWorship(const WorshipPosition('reading'));
+    }
     _load();
+  }
+
+  void _openReading(Map<String, dynamic> r) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => _ReadingDetail(
+          reading: r,
+          initialVersion: _displayVersion,
+        ),
+      ),
+    );
   }
 
   Future<void> _load() async {
@@ -50,6 +69,17 @@ class _ResponsiveReadingScreenState extends State<ResponsiveReadingScreen> {
         _categories = ['전체', ...cats];
         _loading = false;
       });
+      final n = widget.initialReadingNumber;
+      if (n != null) {
+        for (final r in list) {
+          if ('${r['number']}' == '$n') {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (mounted) _openReading(r);
+            });
+            break;
+          }
+        }
+      }
     } catch (e) {
       if (!mounted) return;
       setState(() {
@@ -210,17 +240,7 @@ class _ResponsiveReadingScreenState extends State<ResponsiveReadingScreen> {
                                 ].join(' · '),
                               ),
                               trailing: const Icon(Icons.chevron_right),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => _ReadingDetail(
-                                      reading: r,
-                                      initialVersion: _displayVersion,
-                                    ),
-                                  ),
-                                );
-                              },
+                              onTap: () => _openReading(r),
                             ),
                           );
                         },
@@ -252,6 +272,8 @@ class _ReadingDetailState extends State<_ReadingDetail> {
   void initState() {
     super.initState();
     _versions = [widget.initialVersion];
+    final n = int.tryParse('${widget.reading['number'] ?? ''}');
+    LastPositionService.saveWorship(WorshipPosition('reading', n));
   }
 
   List<Map<String, String>> _buildLines(BibleProvider provider) {

@@ -1,6 +1,6 @@
 # RESUME HERE — 다음 세션 시작점
 
-**체크포인트:** 2026-10-17  
+**체크포인트:** 2026-10-18  
 **작업 방식:** Play Store Phase 0→8 가이드 + Sprint A→D 우선순위 (Linear PPTX에 문서화됨)  
 **목표:** 2026-11 Google Play 1.0 공개
 
@@ -9,6 +9,8 @@
 > 전체 절차 정본: [`ANDROID_RELEASE_PROCESS.md`](./ANDROID_RELEASE_PROCESS.md) · PPTX `docs/roadmap-pptx/KoreanBible_Android_Release_Process_2026-09-29.pptx`
 
 > **원스토어(2026-10-03):** [`ONESTORE_RELEASE_GUIDE.md`](./ONESTORE_RELEASE_GUIDE.md) — 서명 APK 준비 완료 · 가입/등록/심사는 사용자 · 자산·문구 초안이 다음 작업
+
+> **2026-10-18:** 1.0.3+4 (로컬 커밋 · 미푸시) — 기본 역본 KRV만 · 섹션별 이어보기 · 검색(성경책/구절 바로가기/본문). APK `Desktop\Bible Project\korean-bible-1.0.3.apk`. **app_version.json 은 1.0.3 판매 개시 후에 갱신**
 
 > **2026-10-17:** 1.0.2+3 — 설정 > '버전 정보 및 업데이트' (app_version.json 비교 · 원스토어 PID 0001009901). 서명 APK `Desktop\Bible Project\korean-bible-1.0.2.apk` · 실기기 확인 후 원스토어 업데이트 제출이 다음 작업. **새 버전 출시 때마다 app_version.json 갱신**
 
